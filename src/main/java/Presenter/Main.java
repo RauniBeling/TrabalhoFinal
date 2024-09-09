@@ -5,21 +5,22 @@
  */
 package Presenter;
 
-import Presenter.TelaPrincipalPresenter;
-import Service.AutenticacaoService;
-import Model.RepositorioUsuariosImpl;
-import Model.RepositorioUsuariosImpl;
+import View.ManterInclusaoEdicaoView;
+import config.AppInitializer;
+
 
 public class Main {
+
     public static void main(String[] args) {
-//        // Criação dos objetos envolvidos
-//        TelaPrincipalView telaPrincipalView = new TelaPrincipalView();
-//        RepositorioUsuariosImpl repositorioUsuarios = new RepositorioUsuariosImpl();
-//        AutenticacaoService autenticacaoService = new AutenticacaoService(repositorioUsuarios);
-//        TelaPrincipalPresenter telaPrincipalPresenter = new TelaPrincipalPresenter(telaPrincipalView, autenticacaoService, repositorioUsuarios);
-//
-//        // Configuração da view
-//        telaPrincipalView.setVisible(true);
-          new TelaPrincipalPresenter();
+        // Criação dos objetos envolvidos
+        // TelaPrincipalView telaPrincipalView = new TelaPrincipalView();
+        AppInitializer.initialize();
+
+        TelaPrincipalPresenter telaPrincipalPresenter = new TelaPrincipalPresenter(AppInitializer.getAutenticacaoService(), AppInitializer.getRepositorioUsuarios());
+        // RepositorF9ioUsuariosImpl repositorioUsuarios = new RepositorioUsuariosImpl();
+        // AutenticacaoService autenticacaoService = new AutenticacaoService(repositorioUsuarios);
+        //TelaPrincipalPresenter telaPrincipalPresenter = new TelaPrincipalPresenter(telaPrincipalView, autenticacaoService, repositorioUsuarios);
+
+        // new TelaPrincipalPresenter();
     }
 }
