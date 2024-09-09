@@ -15,7 +15,7 @@ public class BuscarPresenter {
         view.getButtonFecharBuscar().addActionListener((ActionEvent e) -> {
                 Fechar();
             });
-
+        view.setVisible(true);
     }
 
     private void Fechar() {

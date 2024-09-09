@@ -1,53 +1,129 @@
 package Presenter;
 
 import Model.RepositorioUsuarios;
+import Model.RepositorioNotificacoes;
+import Model.Usuario;
 import Service.AutenticacaoService;
 import View.TelaPrincipalView;
 
-import javax.swing.*;
 
 public class TelaPrincipalPresenter {
     private TelaPrincipalView view;
     private AutenticacaoService autenticacaoService;
     private RepositorioUsuarios repositorioUsuarios;
+    private RepositorioNotificacoes repositorioNotificacoes;
 
-    public TelaPrincipalPresenter() {
+    public TelaPrincipalPresenter(AutenticacaoService autenticacaoService, RepositorioUsuarios repositorioUsuarios) {
         this.view = new TelaPrincipalView();
+        this.repositorioUsuarios = repositorioUsuarios;
+        this.autenticacaoService = autenticacaoService;
 
-        view.getMenuAdicionarEditar().addActionListener(e -> abrirManterInclusaoEdicaoView());
-        view.getMenuBuscar().addActionListener(e -> abrirBuscarView());
+        inicializarTela();
     }
 
-    public void autenticarUsuario(String nome, String senha) {
-        boolean autenticado = autenticacaoService.autenticar(nome, senha);
-        if (autenticado) {
-            // Exibir a tela principal
-            view.setVisible(true);
+    private void inicializarTela() {
+        if (isDatabaseEmpty()) {
+            criarPrimeiroUsuario();
         } else {
-            // Exibir mensagem de erro de autenticação
-            JOptionPane.showMessageDialog(view, "Usuário ou senha inválidos!");
+            autenticarUsuario();
+        }
+        atualizarInformacoesTela();
+        
+    }
+
+    private boolean isDatabaseEmpty() {
+        return repositorioUsuarios.obterTodosUsuarios().isEmpty();
+    }
+
+    private void criarPrimeiroUsuario() {
+        String nome = view.solicitarNomeUsuario();
+        String senha = view.solicitarSenha();
+
+        if (nome == null || senha == null || nome.trim().isEmpty() || senha.trim().isEmpty()) {
+            view.exibirMensagem("Nome de usuário e senha são obrigatórios. O programa será encerrado.");
+            System.exit(0);
+        }
+
+        Usuario primeiroUsuario = new Usuario(nome, senha, "Administrador", true);
+        repositorioUsuarios.adicionarUsuario(primeiroUsuario);
+        view.exibirMensagem("Usuário administrador criado com sucesso!");
+        autenticarUsuario();
+    }
+
+    private void autenticarUsuario() {
+        String nome = view.solicitarNomeUsuario();
+        String senha = view.solicitarSenha();
+
+        if (nome == null || senha == null) {
+            System.exit(0);
+        }
+
+        if (autenticacaoService.autenticar(nome, senha)) {
+            if (autenticacaoService.estaPermitido()) {
+                atualizarInformacoesTela();
+            } else {
+                view.exibirMensagem("Seu acesso ainda não foi autorizado pelo administrador. Por favor, aguarde a aprovação.");
+                autenticarUsuario();
+            }
+        } else {
+            Usuario usuario = repositorioUsuarios.obterUsuarioPorNome(nome);
+            if (usuario == null) {
+                registrarNovoUsuario(nome, senha);
+            } else {
+                view.exibirMensagem("Senha inválida ou usuário não autorizado!");
+                autenticarUsuario();
+            }
         }
     }
 
-    private void abrirManterInclusaoEdicaoView() {
-        try {
-            ManterInclusaoEdicaoPresenter presenter = new ManterInclusaoEdicaoPresenter();
-            presenter.showView();
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(view, "error: " + ex, "Aviso", JOptionPane.WARNING_MESSAGE);
+    private void registrarNovoUsuario(String nome, String senha) {
+        Usuario novoUsuario = new Usuario(nome, senha, "Comum", false);
+        repositorioUsuarios.adicionarUsuario(novoUsuario);
+        view.exibirMensagem("Usuário registrado com sucesso! Aguarde a autorização do administrador.");
+        autenticarUsuario();
+        view.exibirTela();
+    }
+
+    private void atualizarInformacoesTela() {
+        Usuario usuarioAtual = autenticacaoService.getUsuarioAutenticado();
+        if (usuarioAtual != null && usuarioAtual.isPermitido()) {
+            view.atualizarInformacoesUsuario(usuarioAtual.getNome(), usuarioAtual.getTipo());
+            view.habilitarMenuAdministrador(autenticacaoService.isAdmin());
+            atualizarContadorNotificacoes();
+            view.exibirTela();
+        } else {
+            view.exibirMensagem("Seu acesso ainda não foi autorizado pelo administrador. Por favor, aguarde a aprovação.");
+            autenticarUsuario();
         }
     }
 
-    private void abrirBuscarView() {
-        try {
-            BuscarPresenter presenter = new BuscarPresenter();
-            presenter.showView();
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(view, "error: " + ex, "Aviso", JOptionPane.WARNING_MESSAGE);
+    private void atualizarContadorNotificacoes() {
+        Usuario usuarioAtual = autenticacaoService.getUsuarioAutenticado();
+        if (usuarioAtual != null) {
+//            int quantidadeNotificacoes = repositorioNotificacoes.contarNotificacoesNaoLidasPorDestinatario(usuarioAtual.getNome());
+  //          view.atualizarContadorNotificacoes(quantidadeNotificacoes);
         }
     }
 
-    public static void main(String[] args) {
-        TelaPrincipalPresenter presenter = new TelaPrincipalPresenter();
+  
+
+    public void abrirTelaManterInclusaoEdicao() {
+        if (verificarAutenticacaoEPermissao()) {
+            new ManterInclusaoEdicaoPresenter().showView();
+        }
+    }
+
+    public void abrirTelaBuscar() {
+        if (verificarAutenticacaoEPermissao()) {
+            new BuscarPresenter().showView();
+        }
+    }
+
+    private boolean verificarAutenticacaoEPermissao() {
+        if (!autenticacaoService.isAdmin()) {
+            view.exibirMensagem("Você precisa ser um administrador para realizar esta ação.");
+            return false;
+        }
+        return true;
     }
 }

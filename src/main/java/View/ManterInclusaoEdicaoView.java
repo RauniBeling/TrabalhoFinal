@@ -19,17 +19,17 @@ public class ManterInclusaoEdicaoView extends javax.swing.JFrame {
      * Creates new form ManterInclusaoEdicaoView
      */
     public void setNome(String nome) {
-        jTextFieldNome.setText(nome);
+        lblNome.setText(nome);
     }
     public void setSenha(String senha) {
-        jTextFieldSenha.setText(senha);
+        lblSenha.setText(senha);
     }
     
     public String getNome() {
-        return jTextFieldNome.getText();
+        return lblNome.getText();
     }
     public String getSenha() {
-         return jTextFieldSenha.getText();
+         return lblSenha.getText();
     }
     public JButton getButtonCancelarManterEditar() {
         return buttonCancelarManterEditar;
@@ -39,6 +39,9 @@ public class ManterInclusaoEdicaoView extends javax.swing.JFrame {
     }
     public ManterInclusaoEdicaoView() {
         initComponents();
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setSize(250, 300);
     }
 
     /**
@@ -52,10 +55,10 @@ public class ManterInclusaoEdicaoView extends javax.swing.JFrame {
 
         buttonCancelarManterEditar = new javax.swing.JButton();
         buttonSalvar = new javax.swing.JButton();
-        jTextFieldNome = new javax.swing.JTextField();
-        jTextFieldSenha = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        lblNome = new javax.swing.JTextField();
+        lblSenha = new javax.swing.JTextField();
+        lblNomeManter = new javax.swing.JLabel();
+        lblSenhaManter = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(500, 300));
@@ -74,57 +77,57 @@ public class ManterInclusaoEdicaoView extends javax.swing.JFrame {
             }
         });
 
-        jTextFieldNome.addActionListener(new java.awt.event.ActionListener() {
+        lblNome.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldNomeActionPerformed(evt);
+                lblNomeActionPerformed(evt);
             }
         });
 
-        jTextFieldSenha.addActionListener(new java.awt.event.ActionListener() {
+        lblSenha.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldSenhaActionPerformed(evt);
+                lblSenhaActionPerformed(evt);
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jLabel1.setText("Nome:");
+        lblNomeManter.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        lblNomeManter.setText("Nome:");
 
-        jLabel2.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jLabel2.setText("Senha:");
+        lblSenhaManter.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        lblSenhaManter.setText("Senha:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(50, 50, 50)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextFieldNome)
+                    .addComponent(lblNome)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(buttonSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(30, 30, 30)
-                        .addComponent(buttonCancelarManterEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
-                    .addComponent(jTextFieldSenha))
-                .addContainerGap(50, Short.MAX_VALUE))
+                        .addComponent(buttonCancelarManterEditar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(lblNomeManter, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblSenhaManter)
+                    .addComponent(lblSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(1, 1, 1))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(50, 50, 50)
-                .addComponent(jLabel1)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(1, 1, 1)
+                .addComponent(lblNomeManter)
                 .addGap(10, 10, 10)
-                .addComponent(jTextFieldNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
-                .addComponent(jLabel2)
+                .addComponent(lblSenhaManter)
                 .addGap(10, 10, 10)
-                .addComponent(jTextFieldSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
+                .addComponent(lblSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonCancelarManterEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttonSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(50, 50, 50))
+                .addGap(1, 1, 1))
         );
 
         pack();
@@ -134,59 +137,26 @@ public class ManterInclusaoEdicaoView extends javax.swing.JFrame {
 
     }//GEN-LAST:event_buttonSalvarActionPerformed
 
-    private void buttonCancelarManterEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelarManterEditarActionPerformed
+    private void buttonCancelarManterEditarActionPerformed(java.awt.event.ActionEvent evt) {
+        this.dispose();
+    }                                                          
+
+    private void lblNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lblNomeActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_buttonCancelarManterEditarActionPerformed
+    }//GEN-LAST:event_lblNomeActionPerformed
 
-    private void jTextFieldNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNomeActionPerformed
+    private void lblSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lblSenhaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldNomeActionPerformed
+    }//GEN-LAST:event_lblSenhaActionPerformed
 
-    private void jTextFieldSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldSenhaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldSenhaActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ManterInclusaoEdicaoView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ManterInclusaoEdicaoView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ManterInclusaoEdicaoView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ManterInclusaoEdicaoView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ManterInclusaoEdicaoView().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonCancelarManterEditar;
     private javax.swing.JButton buttonSalvar;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JTextField jTextFieldNome;
-    private javax.swing.JTextField jTextFieldSenha;
+    private javax.swing.JTextField lblNome;
+    private javax.swing.JLabel lblNomeManter;
+    private javax.swing.JTextField lblSenha;
+    private javax.swing.JLabel lblSenhaManter;
     // End of variables declaration//GEN-END:variables
 }

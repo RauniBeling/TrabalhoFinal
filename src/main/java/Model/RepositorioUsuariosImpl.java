@@ -1,40 +1,39 @@
 package Model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import DAO.UsuarioDAO;
 import java.util.List;
-import java.util.Map;
 
 public class RepositorioUsuariosImpl implements RepositorioUsuarios {
-    private Map<String, Usuario> usuarios;
-
-    public RepositorioUsuariosImpl() {
-        this.usuarios = new HashMap<>();
-    }
-
+    private UsuarioDAO usuarioDAO;
+ 
     @Override
     public void adicionarUsuario(Usuario usuario) {
-        usuarios.put(usuario.getNome(), usuario);
+        usuarioDAO.adicionarUsuario(usuario);
     }
 
     @Override
     public void atualizarUsuario(Usuario usuario) {
-        usuarios.put(usuario.getNome(), usuario);
+        usuarioDAO.atualizarUsuario(usuario);
     }
 
     @Override
     public void excluirUsuario(Usuario usuario) {
-        usuarios.remove(usuario.getNome());
+        usuarioDAO.excluirUsuario(usuario);
     }
 
     @Override
     public Usuario obterUsuarioPorNome(String nome) {
-        return usuarios.get(nome);
+        return usuarioDAO.obterUsuarioPorNome(nome);
     }
 
     @Override
     public List<Usuario> obterTodosUsuarios() {
-        return new ArrayList<>(usuarios.values());
+        return usuarioDAO.obterTodosUsuarios();
     }
+
+    @Override
+    public void repositorioUsuariosImpl(UsuarioDAO usuarioDAO) {
+        this.usuarioDAO = usuarioDAO;
+     }
 }
 

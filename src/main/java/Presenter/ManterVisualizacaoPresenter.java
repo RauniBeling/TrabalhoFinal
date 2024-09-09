@@ -13,6 +13,7 @@ public class ManterVisualizacaoPresenter {
     public ManterVisualizacaoPresenter(ManterVisualizacaoView view, RepositorioUsuarios repositorioUsuarios) {
         this.view = view;
         this.repositorioUsuarios = repositorioUsuarios;
+        view.getButtonFecharManterVisualizar().addActionListener(e -> view.dispose());
         configureView();
     }
 
@@ -29,8 +30,8 @@ public class ManterVisualizacaoPresenter {
     public void editarUsuario(Usuario usuario) {
         // Abrir tela de inclusão/edição preenchida com os dados do usuário
         ManterInclusaoEdicaoView inclusaoEdicaoView = new ManterInclusaoEdicaoView();
-        ManterInclusaoEdicaoPresenter inclusaoEdicaoPresenter = new ManterInclusaoEdicaoPresenter(inclusaoEdicaoView, repositorioUsuarios);
-        inclusaoEdicaoPresenter.preencherDadosUsuario(usuario);
+      //  ManterInclusaoEdicaoPresenter inclusaoEdicaoPresenter = new ManterInclusaoEdicaoPresenter(inclusaoEdicaoView, repositorioUsuarios);
+        //inclusaoEdicaoPresenter.preencherDadosUsuario(usuario);
         inclusaoEdicaoView.setVisible(true);
     }
 }

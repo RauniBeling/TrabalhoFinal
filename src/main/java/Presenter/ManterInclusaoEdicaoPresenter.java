@@ -5,16 +5,27 @@ import Model.Usuario;
 import View.ManterInclusaoEdicaoView;
 import View.ManterVisualizacaoView;
 import View.SucessoView;
+import java.awt.event.ActionEvent;
 import java.util.Date;
 import javax.swing.JOptionPane;
 
 public class ManterInclusaoEdicaoPresenter {
+
     private ManterInclusaoEdicaoView view;
     private RepositorioUsuarios repositorioUsuarios;
-    
 
-    public ManterInclusaoEdicaoPresenter() {
+    public ManterInclusaoEdicaoPresenter(RepositorioUsuarios repositorioUsuarios) {
         this.view = new ManterInclusaoEdicaoView();
+        this.repositorioUsuarios = repositorioUsuarios;
+        view.getButtonCancelarManterEditar().addActionListener((ActionEvent e) -> {
+            Fechar();
+        });
+        configureView();
+        view.setVisible(true);
+    }
+
+    private void Fechar() {
+        view.dispose();
     }
 
     void configureView() {
@@ -25,10 +36,18 @@ public class ManterInclusaoEdicaoPresenter {
             String senha = view.getSenha();
             salvarUsuario(nome, senha);
         });
+        
+        // Adicionar ação para o botão fechar
+        view.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                Fechar();
+            }
+        });
     }
 
     public void salvarUsuario(String nome, String senha) {
-        Usuario usuario = new Usuario(nome, senha);
+        Usuario usuario = new Usuario(nome, senha, "comum", true);
         usuario.setDataCadastro(new Date()); // Define a data e hora atual do sistema
         repositorioUsuarios.adicionarUsuario(usuario);
         // Exibir mensagem de sucesso
@@ -51,8 +70,8 @@ public class ManterInclusaoEdicaoPresenter {
         view.setNome(usuario.getNome());
         view.setSenha(usuario.getSenha());
     }
+
     public void showView() {
         view.setVisible(true);
     }
 }
-

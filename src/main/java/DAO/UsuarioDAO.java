@@ -8,16 +8,42 @@ import java.util.List;
 public class UsuarioDAO {
     private Connection connection;
 
+    private static final String DB_URL = "jdbc:sqlite:Banco.db";
+    
     public UsuarioDAO() {
-        // Inicialize a conexão com o banco de dados aqui
+        try {
+            
+            if (connection == null || connection.isClosed()) {
+                connection = DriverManager.getConnection(DB_URL);
+                criarTabelaUsuarios();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void criarTabelaUsuarios() {
+        String sql = "CREATE TABLE IF NOT EXISTS usuarios (" +
+                     "nome TEXT PRIMARY KEY," +
+                     "senha TEXT NOT NULL," +
+                     "data_cadastro DATE NOT NULL," +
+                     "tipo TEXT NOT NULL," +
+                     "permitido BOOLEAN NOT NULL)";
+        try (Statement stmt = connection.createStatement()) {
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void adicionarUsuario(Usuario usuario) {
-        String sql = "INSERT INTO usuarios (nome, senha, data_cadastro) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO usuarios (nome, senha, data_cadastro, tipo, permitido) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, usuario.getNome());
             statement.setString(2, usuario.getSenha());
             statement.setDate(3, new java.sql.Date(usuario.getDataCadastro().getTime()));
+            statement.setString(4, usuario.getTipo());
+            statement.setBoolean(5, usuario.isPermitido());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -53,7 +79,9 @@ public class UsuarioDAO {
             if (resultSet.next()) {
                 String senha = resultSet.getString("senha");
                 Date dataCadastro = resultSet.getDate("data_cadastro");
-                return new Usuario(nome, senha);
+                String tipo = resultSet.getString("tipo");
+                boolean permitido = resultSet.getBoolean("permitido");
+                return new Usuario(nome, senha, tipo, permitido);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -70,7 +98,11 @@ public class UsuarioDAO {
                 String nome = resultSet.getString("nome");
                 String senha = resultSet.getString("senha");
                 Date dataCadastro = resultSet.getDate("data_cadastro");
-                Usuario usuario = new Usuario(nome, senha);
+                String tipo = resultSet.getString("tipo");
+                boolean permitido = resultSet.getBoolean("permitido");
+                Usuario usuario = new Usuario(nome, senha, tipo, permitido);
+                usuario.setDataCadastro(dataCadastro);
+                usuario.setTipo(tipo);
                 usuarios.add(usuario);
             }
         } catch (SQLException e) {
@@ -79,14 +111,5 @@ public class UsuarioDAO {
         return usuarios;
     }
 
-    // Implemente outros métodos do DAO, se necessário
-
-    private void abrirConexao() {
-        // Implemente o código para abrir a conexão com o banco de dados
-    }
-
-    private void fecharConexao() {
-        // Implemente o código para fechar a conexão com o banco de dados
-    }
 }
 
