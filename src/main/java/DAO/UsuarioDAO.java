@@ -64,10 +64,12 @@ public class UsuarioDAO {
     }
 
     public void atualizarUsuario(Usuario usuario) {
-        String sql = "UPDATE usuarios SET senha = ? WHERE nome = ?";
+        String sql = "UPDATE usuarios SET senha = ?, tipo = ?, permitido = ? WHERE nome = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, usuario.getSenha());
-            statement.setString(2, usuario.getNome());
+            statement.setString(2, usuario.getTipo());
+            statement.setBoolean(3, usuario.isPermitido());
+            statement.setString(4, usuario.getNome());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
