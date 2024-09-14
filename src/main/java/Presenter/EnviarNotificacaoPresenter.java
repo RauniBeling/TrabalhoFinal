@@ -8,6 +8,8 @@ import Model.RepositorioNotificacoes;
 import Model.RepositorioUsuarios;
 import Model.Usuario;
 import View.EnviaNotificacaoView;
+import config.AppInitializer;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,11 +24,11 @@ public class EnviarNotificacaoPresenter {
     private RepositorioUsuarios repositorioUsuarios;
     private RepositorioNotificacoes repositorioNotificacoes;
     private Usuario usuarioLogado;
-    public EnviarNotificacaoPresenter(RepositorioUsuarios repositorioUsuarios, RepositorioNotificacoes repositorioNotificacoes, Usuario usuarioLogado) {
+    public EnviarNotificacaoPresenter() {
         this.view = new EnviaNotificacaoView();
-        this.repositorioUsuarios = repositorioUsuarios;
-        this.repositorioNotificacoes = repositorioNotificacoes;
-        this.usuarioLogado = usuarioLogado;
+        this.repositorioUsuarios = AppInitializer.getRepositorioUsuarios();
+        this.repositorioNotificacoes = AppInitializer.getRepositorioNotificacoes();
+        this.usuarioLogado = AppInitializer.getUsuarioLogado();
         configureView();
     }
 
@@ -59,7 +61,6 @@ public class EnviarNotificacaoPresenter {
         repositorioNotificacoes.enviarNotificacaoEmMassa(usuarioLogado.getNome(), destinatarios, mensagem);
         
         view.exibirMensagem("Notificação enviada com sucesso!");
-        view.dispose();
     }
 
     public void showView() {

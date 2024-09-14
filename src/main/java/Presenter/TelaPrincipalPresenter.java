@@ -1,12 +1,11 @@
 package Presenter;
 
-import Model.Notificacao;
 import Model.RepositorioUsuarios;
 import Model.RepositorioNotificacoes;
 import Model.Usuario;
 import Service.AutenticacaoService;
 import View.TelaPrincipalView;
-import java.util.List;
+import config.AppInitializer;
 
 public class TelaPrincipalPresenter {
 
@@ -15,10 +14,11 @@ public class TelaPrincipalPresenter {
     private RepositorioUsuarios repositorioUsuarios;
     private RepositorioNotificacoes repositorioNotificacoes;
 
-    public TelaPrincipalPresenter(AutenticacaoService autenticacaoService, RepositorioUsuarios repositorioUsuarios) {
+    public TelaPrincipalPresenter() {
         this.view = new TelaPrincipalView();
-        this.repositorioUsuarios = repositorioUsuarios;
-        this.autenticacaoService = autenticacaoService;
+        this.autenticacaoService = AppInitializer.getAutenticacaoService();
+        this.repositorioUsuarios = AppInitializer.getRepositorioUsuarios();
+        this.repositorioNotificacoes = AppInitializer.getRepositorioNotificacoes();
 
         inicializarTela();
     }
@@ -111,7 +111,7 @@ public class TelaPrincipalPresenter {
 
     private void atualizarContadorNotificacoes() {
         Usuario usuarioLogado = autenticacaoService.getUsuarioAutenticado();
-        int quantidadeNaoLidas = repositorioUsuarios.obterNotificacoesNaoLidas(usuarioLogado).size();
+        int quantidadeNaoLidas = repositorioNotificacoes.obterNotificacoesDoUsuario(usuarioLogado.getNome()).size();
         view.atualizarContadorNotificacoes(quantidadeNaoLidas);
     }
 
@@ -125,11 +125,7 @@ public class TelaPrincipalPresenter {
 
     private void abrirVisualizarNotificacoes() {
         Usuario usuarioLogado = autenticacaoService.getUsuarioAutenticado();
-        VisualizarNotificacoesPresenter visualizarNotificacoesPresenter = new VisualizarNotificacoesPresenter(
-                repositorioNotificacoes,
-                repositorioUsuarios,
-                usuarioLogado
-        );
+        VisualizarNotificacoesPresenter visualizarNotificacoesPresenter = new VisualizarNotificacoesPresenter();
         visualizarNotificacoesPresenter.showView();
     }
 }

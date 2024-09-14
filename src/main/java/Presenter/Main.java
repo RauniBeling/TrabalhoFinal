@@ -16,7 +16,7 @@ public class Main {
         // TelaPrincipalView telaPrincipalView = new TelaPrincipalView();
         AppInitializer.initialize();
 
-        TelaPrincipalPresenter telaPrincipalPresenter = new TelaPrincipalPresenter(AppInitializer.getAutenticacaoService(), AppInitializer.getRepositorioUsuarios());
+        TelaPrincipalPresenter telaPrincipalPresenter = new TelaPrincipalPresenter();
         // RepositorF9ioUsuariosImpl repositorioUsuarios = new RepositorioUsuariosImpl();
         // AutenticacaoService autenticacaoService = new AutenticacaoService(repositorioUsuarios);
         //TelaPrincipalPresenter telaPrincipalPresenter = new TelaPrincipalPresenter(telaPrincipalView, autenticacaoService, repositorioUsuarios);

@@ -5,34 +5,26 @@ import java.util.Date;
 import java.util.List;
 import java.util.function.Predicate;
 import config.AppInitializer;
+import DAO.NotificacaoDAO;
 import DAO.UsuarioDAO;
 
 public class RepositorioNotificacoesImpl implements RepositorioNotificacoes {
+    private NotificacaoDAO notificacaoDAO;
     private UsuarioDAO usuarioDAO;
-
     public RepositorioNotificacoesImpl() {
+        this.notificacaoDAO = AppInitializer.getNotificacaoDAO();
         this.usuarioDAO = AppInitializer.getUsuarioDAO();
     }
 
     @Override
     public void adicionarNotificacao(Notificacao notificacao) {
-        usuarioDAO.cadastrarNotificacao(notificacao);
-    }
-
-    @Override
-    public List<Notificacao> obterNotificacoesPorDestinatario(String destinatario) {
-        return usuarioDAO.obterNotificacoesNaoLidas(destinatario);
-    }
-
-    @Override
-    public void marcarNotificacaoComoLida(Notificacao notificacao) {
-        notificacao.marcarComoLida();
+        notificacaoDAO.cadastrarNotificacao(notificacao);
     }
 
     @Override
     public int contarNotificacoesNaoLidasPorDestinatario(String destinatario) {
         int count = 0;
-        for (Notificacao notificacao : usuarioDAO.obterNotificacoesNaoLidas(destinatario)) {
+        for (Notificacao notificacao : notificacaoDAO.obterNotificacoes(destinatario)) {
             if (notificacao.getDestinatario().equals(destinatario) && !notificacao.isLida()) {
                 count++;
             }
@@ -41,38 +33,32 @@ public class RepositorioNotificacoesImpl implements RepositorioNotificacoes {
     }
 
     @Override
-    public void atualizarNotificacoes() {
+    public void atualizarNotificacoes(String usuario) {
         Date dataAtual = new Date();
         long umaSemanaEmMillis = 7 * 24 * 60 * 60 * 1000L; // 7 dias em milissegundos
         
-        usuarioDAO.obterNotificacoesNaoLidas(destinatario).removeIf(notificacao -> {
+        List<Notificacao> todasNotificacoes = notificacaoDAO.obterNotificacoes(usuario);
+        todasNotificacoes.removeIf(notificacao -> {
             long diferenca = dataAtual.getTime() - notificacao.getDataEnvio().getTime();
             return diferenca > umaSemanaEmMillis || notificacao.isLida();
         });
+        for (Notificacao notificacao : todasNotificacoes) {
+            notificacaoDAO.atualizarNotificacoes(notificacao);
+        }
     }
 
     @Override
     public List<Notificacao> obterNotificacoesDoUsuario(String usuario) {
-        List<Notificacao> notificacoesDoUsuario = new ArrayList<>();
-        for (Notificacao notificacao : usuarioDAO.obterNotificacoesNaoLidas(usuario)) {
-            if (notificacao.getDestinatario().getNome().equals(usuario)) {
-                notificacoesDoUsuario.add(notificacao);
-            }
-        }
-        return notificacoesDoUsuario;
+        return notificacaoDAO.obterNotificacoes(usuario);
     }
 
     @Override
-    public Notificacao marcarNotificacaoComoLida(Usuario usuario, String remetente, String mensagem) {
-        for (Notificacao notificacao : usuarioDAO.obterNotificacoesNaoLidas(usuario)) {
-            if (notificacao.getDestinatario().equals(usuario) &&
-                notificacao.getRemetente().getNome().equals(remetente) &&
-                notificacao.getMensagem().equals(mensagem) &&
-                !notificacao.isLida()) {
-                
-                notificacao.marcarComoLida();
-                return notificacao;
-            }
+    public Notificacao marcarNotificacaoComoLida(int idNotificacao) {
+        Notificacao notificacao = notificacaoDAO.obterNotificacaoPorId(idNotificacao);
+        if (notificacao != null && !notificacao.isLida()) {
+            notificacao.setLida(true);
+            notificacaoDAO.marcarNotificacaoComoLida(idNotificacao); // Pass the ID
+            return notificacao;
         }
         return null;
     }
@@ -80,24 +66,19 @@ public class RepositorioNotificacoesImpl implements RepositorioNotificacoes {
     @Override
     public void enviarNotificacaoEmMassa(String nomeRemetente, List<String> nomesDestinatarios, String mensagem) {
         Usuario remetente = usuarioDAO.obterUsuarioPorNome(nomeRemetente);
+        if (remetente == null) {
+            throw new IllegalArgumentException("Remetente não encontrado: " + nomeRemetente);
+        }
         for (String nomeDestinatario : nomesDestinatarios) {
             Usuario destinatario = usuarioDAO.obterUsuarioPorNome(nomeDestinatario);
             if (destinatario != null) {
                 Notificacao novaNotificacao = new Notificacao(mensagem, remetente, destinatario);
                 adicionarNotificacao(novaNotificacao);
+            } else {
+                // Log or handle the case where a destinatario is not found
+                System.out.println("Destinatário não encontrado: " + nomeDestinatario);
             }
         }
     }
 
-    @Override
-    public Notificacao obterNotificacao(Usuario usuarioLogado, String remetente, String mensagem) {
-        for (Notificacao notificacao : usuarioDAO.obterNotificacoesNaoLidas(usuarioLogado.getNome())) {
-            if (notificacao.getDestinatario().equals(usuarioLogado) &&
-                notificacao.getRemetente().getNome().equals(remetente) &&
-                notificacao.getMensagem().equals(mensagem)) {
-                return notificacao;
-            }
-        }
-        return null;
-    }
 }
