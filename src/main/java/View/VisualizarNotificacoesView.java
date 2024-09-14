@@ -1,17 +1,28 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
 package View;
+
+import java.util.List;
+
+import javax.swing.ListSelectionModel;
+
+import DAO.NotificacaoDTO;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author ruanr
  */
-public class VisualizarNotificacoesView extends javax.swing.JFrame {
+public class VisualizarNotificacoesView extends javax.swing.JInternalFrame {
+
+    private javax.swing.JTable tabelaNotificacoes;
+    private javax.swing.JButton btnMarcarComoLida;
+    private javax.swing.JButton btnFechar;
 
     /**
-     * Creates new form VisualizarNotificacoesView
+     * Creates new form NewJInternalFrame
      */
     public VisualizarNotificacoesView() {
         initComponents();
@@ -26,27 +37,67 @@ public class VisualizarNotificacoesView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        tabelaNotificacoes = new javax.swing.JTable();
+        tabelaNotificacoes.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {},
+            new String [] {
+                "Remetente", "Mensagem", "Data", "Lida"
+            }
+        ));
+        // Allow multiple row selection
+        tabelaNotificacoes.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        
+        javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane(tabelaNotificacoes);
+
+        btnMarcarComoLida = new javax.swing.JButton("Marcar como Lida");
+        btnFechar = new javax.swing.JButton("Fechar");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 394, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGap(0, 274, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
- 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
+
+    public javax.swing.JTable getTabelaNotificacoes() {
+        return tabelaNotificacoes;
+    }
+
+    public javax.swing.JButton getBtnMarcarComoLida() {
+        return btnMarcarComoLida;
+    }
+
+    public javax.swing.JButton getBtnFechar() {
+        return btnFechar;
+    }
+
+    // Add a method to get selected rows
+    public int[] getSelectedRows() {
+        return tabelaNotificacoes.getSelectedRows();
+    }
+
+    public void atualizarNotificacoes(List<NotificacaoDTO> notificacoesDTO) {
+        // TODO Auto-generated method stub
+        DefaultTableModel tableModel = (DefaultTableModel) tabelaNotificacoes.getModel();
+        tableModel.setRowCount(0);
+        for (NotificacaoDTO notificacao : notificacoesDTO) {
+            tableModel.addRow(new Object[] {
+                notificacao.getRemetente(),
+                notificacao.getMensagem(),
+                notificacao.getDataEnvio(),
+                notificacao.isLida()
+            });
+        }
+    }
 }

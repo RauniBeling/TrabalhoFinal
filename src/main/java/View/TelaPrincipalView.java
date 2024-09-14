@@ -4,32 +4,43 @@
  * and open the template in the editor.
  */
 package View;
-
+import javax.swing.JButton;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
+import Model.Usuario;
 import Presenter.BuscarPresenter;
+import Presenter.EnviarNotificacaoPresenter;
 import Presenter.ManterInclusaoEdicaoPresenter;
+import Presenter.VisualizarNotificacoesPresenter;
 import config.AppInitializer;
+import Service.AutenticacaoService;
 
 /**
  *
  * @author rauni
  */
 public class TelaPrincipalView extends javax.swing.JFrame {
+    private AutenticacaoService autenticacaoService;
 
     /**
-     * Creates new form TelaPrincipalView
+     * @param btnEnviaNotificacao the btnEnviaNotificacao to set
      */
-    public javax.swing.JMenu getMenuAdicionarEditar() {
-        return menuAdicionarEditar;
+    public void setBtnEnviaNotificacao(javax.swing.JMenuItem btnEnviaNotificacao) {
+        this.btnEnviaNotificacao = btnEnviaNotificacao;
     }
-    public javax.swing.JMenu getMenuBuscar() {
-        return menuBuscar;
+
+    private AppInitializer config;
+    public javax.swing.JMenuItem getMenuAdicionarEditar() {
+        return AdicionarEditar;
+    }
+    public javax.swing.JMenuItem getMenuBuscar() {
+        return Buscar;
     }
     public TelaPrincipalView() {
+        config = new AppInitializer();
+        autenticacaoService = AppInitializer.getAutenticacaoService();
         initComponents();
-        
-        setVisible(true);
     }
 
     /**
@@ -41,107 +52,176 @@ public class TelaPrincipalView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        TelaPrincipalView = new javax.swing.JDesktopPane();
         lblTipoUsuario = new javax.swing.JLabel();
         lblLogin = new javax.swing.JLabel();
         lblNotificacao = new javax.swing.JLabel();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        menuBuscar = new javax.swing.JMenu();
-        menuAdicionarEditar = new javax.swing.JMenu();
-        menuConfig = new javax.swing.JMenu();
+        menuBar = new javax.swing.JMenuBar();
+        fileMenu = new javax.swing.JMenu();
+        Buscar = new javax.swing.JMenuItem();
+        AdicionarEditar = new javax.swing.JMenuItem();
+        mnConfig = new javax.swing.JMenuItem();
+        btnEnviaNotificacao = new javax.swing.JMenuItem();
+        mnEsqueciSenha = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         lblTipoUsuario.setDisplayedMnemonic('l');
         lblTipoUsuario.setText("Tipo: N/A");
+        lblTipoUsuario.setPreferredSize(new java.awt.Dimension(120, 40));
 
         lblLogin.setDisplayedMnemonic('l');
         lblLogin.setText("Usuário não logado");
+        lblLogin.setPreferredSize(new java.awt.Dimension(140, 40));
 
         lblNotificacao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/16px bell.png"))); // NOI18N
         lblNotificacao.setText("0");
-
-        menuBuscar.setText("Buscar");
-        menuBuscar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                menuBuscarMouseClicked(evt);
+        lblNotificacao.setPreferredSize(new java.awt.Dimension(70, 40));
+        lblNotificacao.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                lblNotificacaoMousePressed(evt);
             }
         });
-        jMenuBar1.add(menuBuscar);
 
-        menuAdicionarEditar.setText("Adicioanar/Editar");
-        menuAdicionarEditar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                menuAdicionarEditarMouseClicked(evt);
+        TelaPrincipalView.setLayer(lblTipoUsuario, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        TelaPrincipalView.setLayer(lblLogin, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        TelaPrincipalView.setLayer(lblNotificacao, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        javax.swing.GroupLayout TelaPrincipalViewLayout = new javax.swing.GroupLayout(TelaPrincipalView);
+        TelaPrincipalView.setLayout(TelaPrincipalViewLayout);
+        TelaPrincipalViewLayout.setHorizontalGroup(
+            TelaPrincipalViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(TelaPrincipalViewLayout.createSequentialGroup()
+                .addGap(880, 880, 880)
+                .addComponent(lblLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addComponent(lblTipoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
+                .addComponent(lblNotificacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        TelaPrincipalViewLayout.setVerticalGroup(
+            TelaPrincipalViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(TelaPrincipalViewLayout.createSequentialGroup()
+                .addGap(750, 750, 750)
+                .addGroup(TelaPrincipalViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblTipoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblNotificacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
+
+        fileMenu.setMnemonic('f');
+        fileMenu.setText("Menu Admin");
+
+        Buscar.setMnemonic('o');
+        Buscar.setText("Buscar");
+        Buscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BuscarActionPerformed(evt);
             }
         });
-        jMenuBar1.add(menuAdicionarEditar);
+        fileMenu.add(Buscar);
 
-        menuConfig.setText("Configuracão");
-        menuConfig.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                menuConfigMouseClicked(evt);
+        AdicionarEditar.setText("Adicionar ou Editar");
+        AdicionarEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AdicionarEditarActionPerformed(evt);
             }
         });
-        jMenuBar1.add(menuConfig);
+        fileMenu.add(AdicionarEditar);
 
-        setJMenuBar(jMenuBar1);
+        btnEnviaNotificacao.setText("Enviar notificação");
+        btnEnviaNotificacao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEnviaNotificacaoActionPerformed(evt);
+            }
+        });
+        fileMenu.add(btnEnviaNotificacao);
+
+        menuBar.add(fileMenu);
+
+        mnEsqueciSenha.setText("Menu user");
+
+        jMenuItem1.setLabel("esqueci a senha");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        mnEsqueciSenha.add(jMenuItem1);
+        jMenuItem1.getAccessibleContext().setAccessibleName("esqueci senha");
+
+        menuBar.add(mnEsqueciSenha);
+
+        setJMenuBar(menuBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(159, Short.MAX_VALUE)
-                .addComponent(lblLogin)
-                .addGap(18, 18, 18)
-                .addComponent(lblTipoUsuario)
-                .addGap(18, 18, 18)
-                .addComponent(lblNotificacao, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+            .addComponent(TelaPrincipalView)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(0, 254, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblTipoUsuario)
-                    .addComponent(lblLogin)
-                    .addComponent(lblNotificacao, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
+            .addComponent(TelaPrincipalView)
         );
 
         pack();
-        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
- 
-    private void menuBuscarMouseClicked(java.awt.event.MouseEvent evt) {
-        var presenter = new BuscarPresenter();
-    }
+    private void BuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarActionPerformed
+        BuscarPresenter buscar = new BuscarPresenter();
+        TelaPrincipalView.add(buscar.getView());
+        buscar.showView();
+    }//GEN-LAST:event_BuscarActionPerformed
 
-    private void menuAdicionarEditarMouseClicked(java.awt.event.MouseEvent evt) {
-        var presenter = new ManterInclusaoEdicaoPresenter(AppInitializer.getRepositorioUsuarios());
-    }
+    private void AdicionarEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdicionarEditarActionPerformed
+        ManterInclusaoEdicaoPresenter manter = new ManterInclusaoEdicaoPresenter(AppInitializer.getRepositorioUsuarios());
+        TelaPrincipalView.add(manter.getView());
+        manter.showView();
+    }//GEN-LAST:event_AdicionarEditarActionPerformed
 
-    private void menuConfigMouseClicked(java.awt.event.MouseEvent evt) {
-        // Add your configuration logic here
+    private void mnConfigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnConfigActionPerformed
         JOptionPane.showMessageDialog(this, "Configuração menu clicked");
-    }
+        
+    }//GEN-LAST:event_mnConfigActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-  
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void lblNotificacaoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblNotificacaoMousePressed
+        // TODO add your handling code here:
+        VisualizarNotificacoesPresenter visualizarNotificacoesPresenter = new VisualizarNotificacoesPresenter(AppInitializer.getRepositorioNotificacoes(), AppInitializer.getRepositorioUsuarios(), null);
+        TelaPrincipalView.add(visualizarNotificacoesPresenter.getView());
+        visualizarNotificacoesPresenter.showView();
+    }//GEN-LAST:event_lblNotificacaoMousePressed
+
+    private void btnEnviaNotificacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviaNotificacaoActionPerformed
+        EnviarNotificacaoPresenter enviarNotificacaoPresenter = new EnviarNotificacaoPresenter(
+            AppInitializer.getRepositorioUsuarios(),
+            AppInitializer.getRepositorioNotificacoes(),
+            AppInitializer.getAutenticacaoService().getUsuarioAutenticado()
+        );
+        TelaPrincipalView.add(enviarNotificacaoPresenter.getView());
+        enviarNotificacaoPresenter.showView();
+    }//GEN-LAST:event_btnEnviaNotificacaoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem AdicionarEditar;
+    private javax.swing.JMenuItem Buscar;
+    private javax.swing.JDesktopPane TelaPrincipalView;
+    private javax.swing.JMenuItem btnEnviaNotificacao;
+    private javax.swing.JMenu fileMenu;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JLabel lblLogin;
     private javax.swing.JLabel lblNotificacao;
     private javax.swing.JLabel lblTipoUsuario;
-    private javax.swing.JMenu menuAdicionarEditar;
-    private javax.swing.JMenu menuBuscar;
-    private javax.swing.JMenu menuConfig;
-    // End of variables declaration//GEN-ENDIFICATIONS
-
+    private javax.swing.JMenuBar menuBar;
+    private javax.swing.JMenuItem mnConfig;
+    private javax.swing.JMenu mnEsqueciSenha;
+    // End of variables declaration//GEN-END:variables
     /**
      * @return the lblLogin
      */
@@ -165,16 +245,22 @@ public class TelaPrincipalView extends javax.swing.JFrame {
      public void exibirMensagem(String mensagem) {
         JOptionPane.showMessageDialog(this, mensagem);
     }
-    public void atualizarInformacoesUsuario(String nomeUsuario, String tipoUsuario) {
-        lblLogin.setText("Usuário: " + nomeUsuario);
-        lblTipoUsuario.setText("Tipo: " + tipoUsuario);
+    public void atualizarInformacoesUsuario() {
+        Usuario usuarioLogado = autenticacaoService.getUsuarioAutenticado();
+        if (usuarioLogado != null) {
+            lblLogin.setText("Usuário: " + usuarioLogado.getNome());
+            lblTipoUsuario.setText("Tipo: " + (usuarioLogado.isAdministrador() ? "Administrador" : "Usuário"));
+            habilitarMenuAdministrador(usuarioLogado.isAdministrador());
+        } else {
+            lblLogin.setText("Usuário não logado");
+            lblTipoUsuario.setText("Tipo: N/A");
+            habilitarMenuAdministrador(false);
+        }
     }
-    public void atualizarContadorNotificacoes(int quantidade) {
-        lblNotificacao.setText(String.valueOf(quantidade));
-    }
+    
     public void habilitarMenuAdministrador(boolean habilitar) {
-        menuAdicionarEditar.setEnabled(habilitar);
-        menuBuscar.setEnabled(habilitar);
+        AdicionarEditar.setEnabled(habilitar);
+        Buscar.setEnabled(habilitar);
     }
     public String solicitarNomeUsuario() {
         return JOptionPane.showInputDialog(this, "Digite seu nome de usuário:");
@@ -187,5 +273,28 @@ public class TelaPrincipalView extends javax.swing.JFrame {
     }
     public void exibirTela() {
         setVisible(true);
+    }
+    private JButton notificacoesButton;
+
+    public JButton getNotificacoesButton() {
+        return notificacoesButton;
+    }
+
+    public void atualizarContadorNotificacoes(int quantidade) {
+        lblNotificacao.setText(String.valueOf(quantidade));
+    }
+
+    /**
+     * @return the btnEnviaNotificacao
+     */
+    public javax.swing.JMenuItem getBtnEnviaNotificacao() {
+        return btnEnviaNotificacao;
+    }
+
+    /**
+     * @return the jMenuItem1
+     */
+    public javax.swing.JMenuItem getjMenuItem1() {
+        return jMenuItem1;
     }
 }

@@ -1,6 +1,9 @@
 package Model;
 
 import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Usuario {
     private String nome;
@@ -8,6 +11,7 @@ public class Usuario {
     private Date dataCadastro;
     private String tipo; // "Administrador" ou "Usuario"
     private boolean permitido;// permitido acessar o sistema
+    private List<Notificacao> notificacoes;
 
     public boolean isPermitido() {
         return permitido;
@@ -23,6 +27,7 @@ public class Usuario {
         this.dataCadastro = new Date();
         this.permitido = permitido;
         this.tipo = tipo;
+        this.notificacoes = new ArrayList<>();
     }
 
     public String getNome() {
@@ -51,6 +56,16 @@ public class Usuario {
    
     public boolean isAdministrador() {
         return "Administrador".equals(tipo);
+    }
+
+    public void adicionarNotificacao(Notificacao notificacao) {
+        notificacoes.add(notificacao);
+    }
+
+    public List<Notificacao> getNotificacoesNaoLidas() {
+        return notificacoes.stream()
+                .filter(n -> !n.isLida())
+                .collect(Collectors.toList());
     }
 }
 
