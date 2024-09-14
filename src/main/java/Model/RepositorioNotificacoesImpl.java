@@ -8,10 +8,13 @@ import config.AppInitializer;
 import DAO.NotificacaoDAO;
 import DAO.UsuarioDAO;
 import java.util.stream.Collectors;
+import Log.LogManager;
 
 public class RepositorioNotificacoesImpl implements RepositorioNotificacoes {
     private NotificacaoDAO notificacaoDAO;
     private UsuarioDAO usuarioDAO;
+    private LogManager logManager = LogManager.getInstance();
+
     public RepositorioNotificacoesImpl() {
         this.notificacaoDAO = AppInitializer.getNotificacaoDAO();
         this.usuarioDAO = AppInitializer.getUsuarioDAO();
@@ -20,6 +23,7 @@ public class RepositorioNotificacoesImpl implements RepositorioNotificacoes {
     @Override
     public void adicionarNotificacao(Notificacao notificacao) {
         notificacaoDAO.cadastrarNotificacao(notificacao);
+        logManager.log("Envio de notificação", notificacao.getDestinatario().getNome(), notificacao.getRemetente().getNome());
     }
 
     @Override
@@ -58,7 +62,8 @@ public class RepositorioNotificacoesImpl implements RepositorioNotificacoes {
         Notificacao notificacao = notificacaoDAO.obterNotificacaoPorId(idNotificacao);
         if (notificacao != null && !notificacao.isLida()) {
             notificacao.setLida(true);
-            notificacaoDAO.marcarNotificacaoComoLida(idNotificacao); // Pass the ID
+            notificacaoDAO.marcarNotificacaoComoLida(idNotificacao);
+            logManager.log("Leitura de notificação", String.valueOf(idNotificacao), notificacao.getDestinatario().getNome());
             return notificacao;
         }
         return null;

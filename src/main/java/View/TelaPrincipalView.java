@@ -65,6 +65,7 @@ public class TelaPrincipalView extends javax.swing.JFrame {
         btnEnviaNotificacao = new javax.swing.JMenuItem();
         mnEsqueciSenha = new javax.swing.JMenu();
         mnTrocaSenha = new javax.swing.JMenuItem();
+        btnUsuariosPendentes = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -147,6 +148,10 @@ public class TelaPrincipalView extends javax.swing.JFrame {
         });
         fileMenu.add(btnEnviaNotificacao);
 
+        btnUsuariosPendentes.setText("Usuários Pendentes");
+        
+        fileMenu.add(btnUsuariosPendentes);
+
         menuBar.add(fileMenu);
 
         mnEsqueciSenha.setText("Menu user");
@@ -215,11 +220,13 @@ public class TelaPrincipalView extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEnviaNotificacaoActionPerformed
 
 
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem AdicionarEditar;
     private javax.swing.JMenuItem Buscar;
     private javax.swing.JDesktopPane TelaPrincipalView;
     private javax.swing.JMenuItem btnEnviaNotificacao;
+    private javax.swing.JMenuItem btnUsuariosPendentes;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JLabel lblLogin;
     private javax.swing.JLabel lblNotificacao;
@@ -270,6 +277,7 @@ public class TelaPrincipalView extends javax.swing.JFrame {
         Buscar.setEnabled(habilitar);
         btnEnviaNotificacao.setEnabled(habilitar);
         mnConfig.setEnabled(habilitar);
+        btnUsuariosPendentes.setEnabled(habilitar);
     }
     public String solicitarNomeUsuario() {
         return JOptionPane.showInputDialog(this, "Digite seu nome de usuário:");
@@ -305,5 +313,30 @@ public class TelaPrincipalView extends javax.swing.JFrame {
      */
     public javax.swing.JMenuItem getjMenuItem1() {
         return mnTrocaSenha;
+    }
+
+    public String selecionarUsuarioPendente(String[] opcoes) {
+        return (String) JOptionPane.showInputDialog(
+            this,
+            "Selecione um usuário para aprovar:",
+            "Usuários Pendentes",
+            JOptionPane.QUESTION_MESSAGE,
+            null,
+            opcoes,
+            opcoes[0]
+        );
+    }
+
+    public int confirmarAprovacao(String usuario) {
+        return JOptionPane.showConfirmDialog(
+            this,
+            "Deseja aprovar o usuário " + usuario + "?",
+            "Confirmar Aprovação",
+            JOptionPane.YES_NO_OPTION
+        );
+    }
+
+    public javax.swing.JMenuItem getBtnUsuariosPendentes() {
+        return btnUsuariosPendentes;
     }
 }

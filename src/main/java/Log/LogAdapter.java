@@ -1,6 +1,6 @@
 package Log;
 
 public interface LogAdapter {
-    void writeLog(String log);
+    void writeLog(String operation, String target, String user);
 }
 

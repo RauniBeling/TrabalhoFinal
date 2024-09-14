@@ -2,5 +2,4 @@
 Grupo:
 - Rauni
 - Ruaney
-- Bernardo
 

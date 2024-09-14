@@ -5,18 +5,16 @@ import java.util.Date;
 
 public class CSVLogFormat implements LogFormat {
     @Override
-    public String formatLog(String operation, String name, String user) {
-        String formattedLog = "\"<OPERACAO>: " + name + ", (" + getCurrentDate() + ", " + getCurrentTime() + ", " + user + ")\"";
-        return formattedLog;
+    public String formatLog(String operation, String target, String user) {   
+        String dateTime = getCurrentDateTime();
+        String[] dateTimeParts = dateTime.split(";");
+        return String.format("%s: <%s>, (%s, %s, e <%s>)", 
+                             operation, target, dateTimeParts[0], dateTimeParts[1], user);
     }
 
-    private String getCurrentDate() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    @Override
+    public String getCurrentDateTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy;HH:mm:ss");
         return dateFormat.format(new Date());
-    }
-
-    private String getCurrentTime() {
-        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
-        return timeFormat.format(new Date());
     }
 }

@@ -7,11 +7,13 @@ import View.ManterVisualizacaoView;
 import java.awt.event.ActionEvent;
 import java.util.Date;
 import javax.swing.JOptionPane;
+import Log.LogManager;
 
 public class ManterInclusaoEdicaoPresenter {
 
     private ManterInclusaoEdicaoView view;
     private RepositorioUsuarios repositorioUsuarios;
+    private LogManager logManager = LogManager.getInstance();
 
     public ManterInclusaoEdicaoPresenter(RepositorioUsuarios repositorioUsuarios) {
         this.view = new ManterInclusaoEdicaoView();
@@ -44,20 +46,28 @@ public class ManterInclusaoEdicaoPresenter {
     }
 
     public void salvarUsuario(String nome, String senha) {
-        Usuario usuario = new Usuario(nome, senha, "comum", true);
-        usuario.setDataCadastro(new Date()); // Define a data e hora atual do sistema
-        repositorioUsuarios.adicionarUsuario(usuario);
-        // Exibir mensagem de sucesso
-        JOptionPane.showMessageDialog(view, "Usuário salvo com sucesso!");
-        // Fechar a tela de inclusão/edição
+        try {
+            // Check if user already exists
+            if (repositorioUsuarios.obterUsuarioPorNome(nome) != null) {
+                view.showErrorMessage("Usuário já existe!");
+                logManager.log("Erro na inclusão de usuário", "Usuário já existe: " + nome, "admin");
+                return;
+            }
+
+            Usuario usuario = new Usuario(nome, senha, "comum", true);
+            usuario.setDataCadastro(new Date());
+            repositorioUsuarios.adicionarUsuario(usuario);
+            logManager.log("Inclusão de usuário", nome, "admin");
+            JOptionPane.showMessageDialog(view, "Usuário salvo com sucesso!");
+            Fechar();
+        } catch (Exception e) {
+            String errorMessage = "Erro ao salvar usuário: " + e.getMessage();
+            view.showErrorMessage(errorMessage);
+        }
     }
 
     public void cancelar() {
         // Fechar a tela de inclusão/edição
-        view.dispose();
-        ManterVisualizacaoView visualizacaoView = new ManterVisualizacaoView();
-        ManterVisualizacaoPresenter visualizacaoPresenter = new ManterVisualizacaoPresenter(visualizacaoView, repositorioUsuarios);
-        visualizacaoView.setVisible(true);
     }
 
     public void preencherDadosUsuario(Usuario usuario) {

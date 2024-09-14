@@ -6,6 +6,12 @@ import Model.Usuario;
 import Service.AutenticacaoService;
 import View.TelaPrincipalView;
 import config.AppInitializer;
+import Log.LogManager;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.swing.JOptionPane;
 
 public class TelaPrincipalPresenter {
 
@@ -13,6 +19,7 @@ public class TelaPrincipalPresenter {
     private AutenticacaoService autenticacaoService;
     private RepositorioUsuarios repositorioUsuarios;
     private RepositorioNotificacoes repositorioNotificacoes;
+    private LogManager logManager = LogManager.getInstance();
 
     public TelaPrincipalPresenter() {
         this.view = new TelaPrincipalView();
@@ -38,6 +45,11 @@ public class TelaPrincipalPresenter {
             }
         });
 
+        view.getBtnUsuariosPendentes().addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mostrarUsuariosPendentes();
+            }
+        });
     }
 
     private boolean isDatabaseEmpty() {
@@ -124,5 +136,40 @@ public class TelaPrincipalPresenter {
         Usuario usuarioLogado = autenticacaoService.getUsuarioAutenticado();
         VisualizarNotificacoesPresenter visualizarNotificacoesPresenter = new VisualizarNotificacoesPresenter();
         visualizarNotificacoesPresenter.showView();
+    }
+
+    private void autorizarUsuario(String username) {
+        Usuario usuario = repositorioUsuarios.obterUsuarioPorNome(username);
+        if (usuario != null && !usuario.isPermitido()) {
+            usuario.setPermitido(true);
+            repositorioUsuarios.atualizarUsuario(usuario);
+            logManager.log("Autorização de usuário", username, autenticacaoService.getUsuarioAutenticado().getNome());
+            view.exibirMensagem("Usuário " + username + " autorizado com sucesso!");
+        }
+    }
+
+    private void mostrarUsuariosPendentes() {
+        if (!verificarAutenticacaoEPermissao()) {
+            return;
+        }
+
+        List<Usuario> usuariosPendentes = repositorioUsuarios.obterTodosUsuarios().stream()
+            .filter(usuario -> !usuario.isPermitido())
+            .collect(Collectors.toList());
+        if (usuariosPendentes.isEmpty()) {
+            view.exibirMensagem("Não há usuários pendentes de aprovação.");
+            return;
+        }
+
+        String[] opcoes = usuariosPendentes.stream().map(Usuario::getNome).toArray(String[]::new);
+        String usuarioSelecionado = view.selecionarUsuarioPendente(opcoes);
+
+        if (usuarioSelecionado != null) {
+            int confirmacao = view.confirmarAprovacao(usuarioSelecionado);
+            if (confirmacao == JOptionPane.YES_OPTION) {
+                autorizarUsuario(usuarioSelecionado);
+                atualizarInformacoesTela();
+            }
+        }
     }
 }

@@ -9,6 +9,7 @@ import Model.RepositorioUsuarios;
 import Model.Usuario;
 import View.EnviaNotificacaoView;
 import config.AppInitializer;
+import Log.LogManager;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,6 +25,8 @@ public class EnviarNotificacaoPresenter {
     private RepositorioUsuarios repositorioUsuarios;
     private RepositorioNotificacoes repositorioNotificacoes;
     private Usuario usuarioLogado;
+    private LogManager logManager = LogManager.getInstance();
+
     public EnviarNotificacaoPresenter() {
         this.view = new EnviaNotificacaoView();
         this.repositorioUsuarios = AppInitializer.getRepositorioUsuarios();
@@ -58,7 +61,10 @@ public class EnviarNotificacaoPresenter {
         String mensagem = view.getTxtTextoNotificacao().getText();
         List<String> destinatarios = view.getSelectedUsers();
 
-        repositorioNotificacoes.enviarNotificacaoEmMassa(usuarioLogado.getNome(), destinatarios, mensagem);
+        for (String destinatario : destinatarios) {
+            repositorioNotificacoes.enviarNotificacaoEmMassa(usuarioLogado.getNome(), List.of(destinatario), mensagem);
+            logManager.log("Envio de notificação", destinatario, usuarioLogado.getNome());
+        }
         
         view.exibirMensagem("Notificação enviada com sucesso!");
     }

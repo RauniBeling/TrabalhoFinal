@@ -5,10 +5,12 @@ import Model.Usuario;
 import View.ManterInclusaoEdicaoView;
 import View.ManterVisualizacaoView;
 import javax.swing.JOptionPane;
+import Log.LogManager;
 
 public class ManterVisualizacaoPresenter {
     private ManterVisualizacaoView view;
     private RepositorioUsuarios repositorioUsuarios;
+    private LogManager logManager = LogManager.getInstance();
 
     public ManterVisualizacaoPresenter(ManterVisualizacaoView view, RepositorioUsuarios repositorioUsuarios) {
         this.view = view;
@@ -23,7 +25,7 @@ public class ManterVisualizacaoPresenter {
 
     public void excluirUsuario(Usuario usuario) {
         repositorioUsuarios.excluirUsuario(usuario);
-        // Exibir mensagem de exclusão realizada
+        logManager.log("Exclusão de usuário", usuario.getNome(), "admin");
         JOptionPane.showMessageDialog(view, "Usuário excluído com sucesso!");
     }
 

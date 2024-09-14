@@ -8,6 +8,8 @@ import View.TrocaSenhaView;
 import config.AppInitializer;
 import Model.Usuario;
 import Model.RepositorioUsuarios;
+import Log.LogManager;
+
 /**
  *
  * @author ruanr
@@ -17,7 +19,8 @@ public class TrocaSenhaPresenter {
     private TrocaSenhaView view;
     private RepositorioUsuarios repositorioUsuarios; // Added field
     private Usuario usuarioLogado; // Added field
-    
+    private LogManager logManager = LogManager.getInstance();
+
     public TrocaSenhaPresenter() {
         this.view = new TrocaSenhaView();
         this.view.setPresenter(this);
@@ -64,6 +67,7 @@ public class TrocaSenhaPresenter {
         if (usuarioLogado != null) {
             usuarioLogado.setSenha(novaSenha);
             repositorioUsuarios.atualizarUsuario(usuarioLogado);
+            logManager.log("Alteração de senha", usuarioLogado.getNome(), usuarioLogado.getNome());
             return true;
         }
         return false;

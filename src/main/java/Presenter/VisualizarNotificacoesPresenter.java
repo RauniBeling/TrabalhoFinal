@@ -1,6 +1,7 @@
 package Presenter;
 
 import DAO.NotificacaoDAO;
+import Log.LogManager;
 import Model.Notificacao;
 import Model.RepositorioNotificacoes;
 import Model.RepositorioUsuarios;
@@ -23,6 +24,7 @@ public class VisualizarNotificacoesPresenter {
     private RepositorioUsuarios repositorioUsuarios;
     private Usuario usuarioLogado;
     private NotificacaoDAO notificacaoDAO;
+    private LogManager logManager = LogManager.getInstance();
 
     public VisualizarNotificacoesPresenter() {
         this.view = new VisualizarNotificacoesView();
@@ -61,6 +63,7 @@ public class VisualizarNotificacoesPresenter {
             if (jaLida == 0) {
                 int idNotificacao = (int) view.getTabelaNotificacoes().getValueAt(row, 0);
                 notificacaoDAO.marcarNotificacaoComoLida(idNotificacao);
+                logManager.log("Leitura de notificação", String.valueOf(idNotificacao), usuarioLogado.getNome());
                 notificacoesMarcarLidas += 1;
             }
         }

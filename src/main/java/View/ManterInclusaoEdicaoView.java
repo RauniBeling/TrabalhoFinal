@@ -6,6 +6,7 @@
 package View;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -19,7 +20,9 @@ public class ManterInclusaoEdicaoView extends javax.swing.JInternalFrame {
     public void setSenha(String senha) {
         lblSenha.setText(senha);
     }
-    
+    public void showErrorMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "Erro", JOptionPane.ERROR_MESSAGE);
+    }
     public String getNome() {
         return lblNome.getText();
     }
