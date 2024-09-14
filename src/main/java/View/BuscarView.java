@@ -5,28 +5,25 @@
  */
 package View;
 
+import javax.swing.table.DefaultTableModel;
+
+import Model.RepositorioNotificacoes;
+import Model.RepositorioUsuarios;
+import Model.Usuario;
+import config.AppInitializer;
+
 /**
  *
  * @author rauni
  */
 public class BuscarView extends javax.swing.JInternalFrame {
 
-    public javax.swing.JButton getButtonNovoBuscar() {
-        return buttonNovoBuscar;
-    }
-    
-    public javax.swing.JButton getButtonFecharBuscar() {
-        return buttonFecharBuscar;
-    }
+    private RepositorioUsuarios repositorioUsuarios;
+    private RepositorioNotificacoes repositorioNotificacoes;
 
-    public javax.swing.JButton getButtonBuscar() {
-        return buttonBuscar;
-    }
-    
-        public javax.swing.JButton getButtonVisualizarBuscar() {
-        return buttonVisualizarBuscar;
-    }
     public BuscarView() {
+        this.repositorioUsuarios = AppInitializer.getRepositorioUsuarios();
+        this.repositorioNotificacoes = AppInitializer.getRepositorioNotificacoes();
         initComponents();
     }
 
@@ -42,12 +39,9 @@ public class BuscarView extends javax.swing.JInternalFrame {
         buttonBuscar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         camposBuscar = new javax.swing.JTable();
-        buttonNovoBuscar = new javax.swing.JButton();
-        buttonFecharBuscar = new javax.swing.JButton();
         buttonVisualizarBuscar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        campo = new javax.swing.JComboBox<>();
-        jTextField1 = new javax.swing.JTextField();
+        txtUsuarioNome = new javax.swing.JTextField();
 
         setClosable(true);
         setIconifiable(true);
@@ -70,19 +64,25 @@ public class BuscarView extends javax.swing.JInternalFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Nome", "Data de Cadastro", "Notificações Enviadas", "Notificações Lidas"
             }
-        ));
-        jScrollPane1.setViewportView(camposBuscar);
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
 
-        buttonNovoBuscar.setText("Novo");
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
-        buttonFecharBuscar.setText("Fechar");
-        buttonFecharBuscar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonFecharBuscarActionPerformed(evt);
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
+        jScrollPane1.setViewportView(camposBuscar);
 
         buttonVisualizarBuscar.setText("Visualizar");
         buttonVisualizarBuscar.addActionListener(new java.awt.event.ActionListener() {
@@ -92,18 +92,11 @@ public class BuscarView extends javax.swing.JInternalFrame {
         });
 
         jLabel1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jLabel1.setText("Buscar por:");
+        jLabel1.setText("Buscar por nome:");
 
-        campo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        campo.addActionListener(new java.awt.event.ActionListener() {
+        txtUsuarioNome.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                campoActionPerformed(evt);
-            }
-        });
-
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                txtUsuarioNomeActionPerformed(evt);
             }
         });
 
@@ -111,26 +104,24 @@ public class BuscarView extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addGap(50, 50, 50)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(buttonVisualizarBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(campo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(buttonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(buttonNovoBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(30, 30, 30)
-                        .addComponent(buttonVisualizarBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(30, 30, 30)
-                        .addComponent(buttonFecharBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(50, 50, 50))
+                            .addComponent(jScrollPane1)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addComponent(txtUsuarioNome, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(buttonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(50, 50, 50))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -139,29 +130,21 @@ public class BuscarView extends javax.swing.JInternalFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(campo, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtUsuarioNome, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(50, 50, 50)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(buttonNovoBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buttonFecharBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buttonVisualizarBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(50, 50, 50))
+                .addGap(44, 44, 44)
+                .addComponent(buttonVisualizarBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBuscarActionPerformed
-        // TODO add your handling code here:
+      
     }//GEN-LAST:event_buttonBuscarActionPerformed
-
-    private void buttonFecharBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonFecharBuscarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_buttonFecharBuscarActionPerformed
 
     private void buttonVisualizarBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonVisualizarBuscarActionPerformed
         // TODO add your handling code here:
@@ -171,20 +154,34 @@ public class BuscarView extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_campoActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void txtUsuarioNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsuarioNomeActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
+    }//GEN-LAST:event_txtUsuarioNomeActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonBuscar;
-    private javax.swing.JButton buttonFecharBuscar;
-    private javax.swing.JButton buttonNovoBuscar;
     private javax.swing.JButton buttonVisualizarBuscar;
-    private javax.swing.JComboBox<String> campo;
     private javax.swing.JTable camposBuscar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField txtUsuarioNome;
     // End of variables declaration//GEN-END:variables
+
+    // Add this method to get access to the camposBuscar JTable
+    public javax.swing.JTable getCamposBuscar() {
+        return camposBuscar;
+    }
+    public javax.swing.ListSelectionModel getSelectionModel() {
+        return camposBuscar.getSelectionModel();
+    }
+    public javax.swing.JButton getButtonBuscar() {
+        return buttonBuscar;
+    }
+
+    /**
+     * @return the txtUsuarioNome
+     */
+    public javax.swing.JTextField getTxtUsuarioNome() {
+        return txtUsuarioNome;
+    }
 }

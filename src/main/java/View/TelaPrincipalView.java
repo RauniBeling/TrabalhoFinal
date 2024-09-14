@@ -12,6 +12,7 @@ import Model.Usuario;
 import Presenter.BuscarPresenter;
 import Presenter.EnviarNotificacaoPresenter;
 import Presenter.ManterInclusaoEdicaoPresenter;
+import Presenter.TrocaSenhaPresenter;
 import Presenter.VisualizarNotificacoesPresenter;
 import config.AppInitializer;
 import Service.AutenticacaoService;
@@ -63,7 +64,7 @@ public class TelaPrincipalView extends javax.swing.JFrame {
         mnConfig = new javax.swing.JMenuItem();
         btnEnviaNotificacao = new javax.swing.JMenuItem();
         mnEsqueciSenha = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        mnTrocaSenha = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -130,6 +131,14 @@ public class TelaPrincipalView extends javax.swing.JFrame {
         });
         fileMenu.add(AdicionarEditar);
 
+        mnConfig.setText("Configurações");
+        mnConfig.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnConfigActionPerformed(evt);
+            }
+        });
+        fileMenu.add(mnConfig);
+
         btnEnviaNotificacao.setText("Enviar notificação");
         btnEnviaNotificacao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -142,14 +151,14 @@ public class TelaPrincipalView extends javax.swing.JFrame {
 
         mnEsqueciSenha.setText("Menu user");
 
-        jMenuItem1.setLabel("esqueci a senha");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        mnTrocaSenha.setLabel("esqueci a senha");
+        mnTrocaSenha.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                mnTrocaSenhaActionPerformed(evt);
             }
         });
-        mnEsqueciSenha.add(jMenuItem1);
-        jMenuItem1.getAccessibleContext().setAccessibleName("esqueci senha");
+        mnEsqueciSenha.add(mnTrocaSenha);
+        mnTrocaSenha.getAccessibleContext().setAccessibleName("esqueci senha");
 
         menuBar.add(mnEsqueciSenha);
 
@@ -186,9 +195,11 @@ public class TelaPrincipalView extends javax.swing.JFrame {
         
     }//GEN-LAST:event_mnConfigActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    private void mnTrocaSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnTrocaSenhaActionPerformed
+        TrocaSenhaPresenter trocaSenha = new TrocaSenhaPresenter();
+        TelaPrincipalView.add(trocaSenha.getView());
+        trocaSenha.showView();
+    }//GEN-LAST:event_mnTrocaSenhaActionPerformed
 
     private void lblNotificacaoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblNotificacaoMousePressed
         // TODO add your handling code here:
@@ -210,13 +221,13 @@ public class TelaPrincipalView extends javax.swing.JFrame {
     private javax.swing.JDesktopPane TelaPrincipalView;
     private javax.swing.JMenuItem btnEnviaNotificacao;
     private javax.swing.JMenu fileMenu;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JLabel lblLogin;
     private javax.swing.JLabel lblNotificacao;
     private javax.swing.JLabel lblTipoUsuario;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem mnConfig;
     private javax.swing.JMenu mnEsqueciSenha;
+    private javax.swing.JMenuItem mnTrocaSenha;
     // End of variables declaration//GEN-END:variables
     /**
      * @return the lblLogin
@@ -293,6 +304,6 @@ public class TelaPrincipalView extends javax.swing.JFrame {
      * @return the jMenuItem1
      */
     public javax.swing.JMenuItem getjMenuItem1() {
-        return jMenuItem1;
+        return mnTrocaSenha;
     }
 }

@@ -50,7 +50,7 @@
             <Property name="text" type="java.lang.String" value="Menu user"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
+            <MenuItem class="javax.swing.JMenuItem" name="mnTrocaSenha">
               <Properties>
                 <Property name="label" type="java.lang.String" value="esqueci a senha"/>
               </Properties>
@@ -58,7 +58,7 @@
                 <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="esqueci senha"/>
               </AccessibilityProperties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem1ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnTrocaSenhaActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>

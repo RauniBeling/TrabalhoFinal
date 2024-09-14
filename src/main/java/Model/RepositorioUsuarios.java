@@ -11,5 +11,6 @@ public interface RepositorioUsuarios {
     Usuario obterUsuarioPorNome(String nome);
     List<Usuario> obterTodosUsuarios();
     void repositorioUsuariosImpl(UsuarioDAO usuarioDAO);
+    List<Usuario> obterTodosUsuarios(String letra);
 }
 

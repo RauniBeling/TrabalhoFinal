@@ -53,7 +53,9 @@ public class Usuario {
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
-   
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
     public boolean isAdministrador() {
         return "Administrador".equals(tipo);
     }
@@ -66,6 +68,16 @@ public class Usuario {
         return notificacoes.stream()
                 .filter(n -> !n.isLida())
                 .collect(Collectors.toList());
+    }
+
+    public int getNotificacoesEnviadas() {
+        return notificacoes.size();
+    }
+
+    public int getNotificacoesLidas() {
+        return (int) notificacoes.stream()
+                .filter(Notificacao::isLida)
+                .count();
     }
 }
 

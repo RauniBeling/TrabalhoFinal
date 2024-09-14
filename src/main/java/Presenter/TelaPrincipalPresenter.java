@@ -33,11 +33,8 @@ public class TelaPrincipalPresenter {
 
         view.getLblNotificacao().addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                if (autenticacaoService.getUsuarioAutenticado().isAdministrador()) {
-                    view.exibirMensagem("Administradores não podem visualizar notificações.");
-                } else {
-                    abrirVisualizarNotificacoes();
-                }
+                
+                abrirVisualizarNotificacoes();
             }
         });
 

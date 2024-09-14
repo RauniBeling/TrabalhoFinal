@@ -29,6 +29,7 @@ public class AppInitializer {
         autenticacaoService = new AutenticacaoService(repositorioUsuarios);
         repositorioNotificacoes = new RepositorioNotificacoesImpl();
         repositorioUsuarios.repositorioUsuariosImpl(usuarioDAO);     
+        
     }
     public static AutenticacaoService getAutenticacaoService() {
         return autenticacaoService;
@@ -50,4 +51,6 @@ public class AppInitializer {
     public static NotificacaoDAO getNotificacaoDAO() {
         return notificacaoDAO;
     }
+    
+ 
 }

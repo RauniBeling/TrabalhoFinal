@@ -7,6 +7,7 @@ import java.util.function.Predicate;
 import config.AppInitializer;
 import DAO.NotificacaoDAO;
 import DAO.UsuarioDAO;
+import java.util.stream.Collectors;
 
 public class RepositorioNotificacoesImpl implements RepositorioNotificacoes {
     private NotificacaoDAO notificacaoDAO;
@@ -79,6 +80,19 @@ public class RepositorioNotificacoesImpl implements RepositorioNotificacoes {
                 System.out.println("Destinatário não encontrado: " + nomeDestinatario);
             }
         }
+    }
+
+    @Override
+    public int contarNotificacoesEnviadasPorUsuario(String usuario) {
+        return (int) notificacaoDAO.obterNotificacoes(usuario).stream()
+                .count();
+    }
+
+    @Override
+    public int contarNotificacoesLidasPorUsuario(String usuario) {
+        return (int) notificacaoDAO.obterNotificacoes(usuario).stream()
+                .filter(Notificacao::isLida)
+                .count();
     }
 
 }

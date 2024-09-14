@@ -101,7 +101,6 @@ public class UsuarioDAO {
         }
         return null;
     }
-
     public List<Usuario> obterTodosUsuarios() {
         List<Usuario> usuarios = new ArrayList<>();
         String sql = "SELECT * FROM usuarios";
@@ -115,7 +114,28 @@ public class UsuarioDAO {
                 boolean permitido = resultSet.getBoolean("permitido");
                 Usuario usuario = new Usuario(nome, senha, tipo, permitido);
                 usuario.setDataCadastro(dataCadastro);
-                usuario.setTipo(tipo);
+                usuarios.add(usuario);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return usuarios;
+    }
+
+    public List<Usuario> obterTodosUsuarios(String letra) {
+        List<Usuario> usuarios = new ArrayList<>();
+        String sql = "SELECT u.* FROM usuarios u WHERE u.nome LIKE ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, "%" + letra + "%");
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                String nome = resultSet.getString("nome");
+                String senha = resultSet.getString("senha");
+                Date dataCadastro = resultSet.getDate("data_cadastro");
+                String tipo = resultSet.getString("tipo");
+                boolean permitido = resultSet.getBoolean("permitido");
+                Usuario usuario = new Usuario(nome, senha, tipo, permitido);
+                usuario.setDataCadastro(dataCadastro);
                 usuarios.add(usuario);
             }
         } catch (SQLException e) {

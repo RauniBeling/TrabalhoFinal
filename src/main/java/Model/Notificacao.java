@@ -53,8 +53,8 @@ public class Notificacao {
         this.lida = lida;
     }
 
-    public String getRemetente() {
-        return remetente.getNome();
+    public Usuario getRemetente() {
+        return remetente;
     }
 
     public void setRemetente(Usuario remetente) {

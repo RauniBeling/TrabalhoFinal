@@ -27,14 +27,19 @@ public class RepositorioUsuariosImpl implements RepositorioUsuarios {
     }
 
     @Override
-    public List<Usuario> obterTodosUsuarios() {
-        return usuarioDAO.obterTodosUsuarios();
+    public List<Usuario> obterTodosUsuarios(String letra) {
+        return usuarioDAO.obterTodosUsuarios(letra);
     }
 
     @Override
     public void repositorioUsuariosImpl(UsuarioDAO usuarioDAO) {
         this.usuarioDAO = usuarioDAO;
      }
+
+    @Override
+    public List<Usuario> obterTodosUsuarios() {
+        return usuarioDAO.obterTodosUsuarios();
+    }
 
 }
 
