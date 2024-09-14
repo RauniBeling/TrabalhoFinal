@@ -9,7 +9,7 @@ package View;
  *
  * @author rauni
  */
-public class BuscarView extends javax.swing.JFrame {
+public class BuscarView extends javax.swing.JInternalFrame {
 
     public javax.swing.JButton getButtonNovoBuscar() {
         return buttonNovoBuscar;
@@ -26,7 +26,6 @@ public class BuscarView extends javax.swing.JFrame {
         public javax.swing.JButton getButtonVisualizarBuscar() {
         return buttonVisualizarBuscar;
     }
-
     public BuscarView() {
         initComponents();
     }
@@ -40,35 +39,21 @@ public class BuscarView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        campo = new javax.swing.JComboBox<>();
-        jTextField1 = new javax.swing.JTextField();
         buttonBuscar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         camposBuscar = new javax.swing.JTable();
         buttonNovoBuscar = new javax.swing.JButton();
         buttonFecharBuscar = new javax.swing.JButton();
         buttonVisualizarBuscar = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        campo = new javax.swing.JComboBox<>();
+        jTextField1 = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setAlwaysOnTop(true);
-        setPreferredSize(new java.awt.Dimension(700, 500));
-
-        jLabel1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jLabel1.setText("Buscar por:");
-
-        campo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        campo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                campoActionPerformed(evt);
-            }
-        });
-
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
+        setTitle("Buscar");
 
         buttonBuscar.setText("Buscar");
         buttonBuscar.addActionListener(new java.awt.event.ActionListener() {
@@ -106,6 +91,22 @@ public class BuscarView extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel1.setText("Buscar por:");
+
+        campo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        campo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                campoActionPerformed(evt);
+            }
+        });
+
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -118,7 +119,7 @@ public class BuscarView extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(campo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(20, 20, 20)
                         .addComponent(buttonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -143,7 +144,7 @@ public class BuscarView extends javax.swing.JFrame {
                     .addComponent(buttonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(50, 50, 50)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonNovoBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttonFecharBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -151,11 +152,20 @@ public class BuscarView extends javax.swing.JFrame {
                 .addGap(50, 50, 50))
         );
 
-        buttonBuscar.getAccessibleContext().setAccessibleName("BuscarButton");
-
         pack();
-        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void buttonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBuscarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buttonBuscarActionPerformed
+
+    private void buttonFecharBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonFecharBuscarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buttonFecharBuscarActionPerformed
+
+    private void buttonVisualizarBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonVisualizarBuscarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buttonVisualizarBuscarActionPerformed
 
     private void campoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoActionPerformed
         // TODO add your handling code here:
@@ -165,19 +175,6 @@ public class BuscarView extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
 
-    private void buttonVisualizarBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonVisualizarBuscarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_buttonVisualizarBuscarActionPerformed
-
-    private void buttonFecharBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonFecharBuscarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_buttonFecharBuscarActionPerformed
-
-    private void buttonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBuscarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_buttonBuscarActionPerformed
-
-  
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonBuscar;

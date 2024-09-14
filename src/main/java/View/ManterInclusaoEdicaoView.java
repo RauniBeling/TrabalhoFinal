@@ -5,19 +5,15 @@
  */
 package View;
 
+import java.awt.event.WindowAdapter;
 import javax.swing.JButton;
-
-
 
 /**
  *
  * @author rauni
  */
-public class ManterInclusaoEdicaoView extends javax.swing.JFrame {
+public class ManterInclusaoEdicaoView extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form ManterInclusaoEdicaoView
-     */
     public void setNome(String nome) {
         lblNome.setText(nome);
     }
@@ -39,9 +35,6 @@ public class ManterInclusaoEdicaoView extends javax.swing.JFrame {
     }
     public ManterInclusaoEdicaoView() {
         initComponents();
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setSize(250, 300);
     }
 
     /**
@@ -60,8 +53,10 @@ public class ManterInclusaoEdicaoView extends javax.swing.JFrame {
         lblNomeManter = new javax.swing.JLabel();
         lblSenhaManter = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(500, 300));
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
 
         buttonCancelarManterEditar.setText("Cancelar");
         buttonCancelarManterEditar.addActionListener(new java.awt.event.ActionListener() {
@@ -101,16 +96,17 @@ public class ManterInclusaoEdicaoView extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lblNome)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(buttonSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(30, 30, 30)
-                        .addComponent(buttonCancelarManterEditar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(lblNomeManter, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblSenhaManter)
-                    .addComponent(lblSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(1, 1, 1))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addComponent(buttonSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(30, 30, 30)
+                            .addComponent(buttonCancelarManterEditar, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE))
+                        .addComponent(lblNomeManter, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblSenhaManter)
+                        .addComponent(lblNome)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -123,7 +119,7 @@ public class ManterInclusaoEdicaoView extends javax.swing.JFrame {
                 .addComponent(lblSenhaManter)
                 .addGap(10, 10, 10)
                 .addComponent(lblSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonCancelarManterEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttonSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -133,13 +129,13 @@ public class ManterInclusaoEdicaoView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void buttonCancelarManterEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelarManterEditarActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_buttonCancelarManterEditarActionPerformed
+
     private void buttonSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSalvarActionPerformed
 
     }//GEN-LAST:event_buttonSalvarActionPerformed
-
-    private void buttonCancelarManterEditarActionPerformed(java.awt.event.ActionEvent evt) {
-        this.dispose();
-    }                                                          
 
     private void lblNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lblNomeActionPerformed
         // TODO add your handling code here:
@@ -150,7 +146,6 @@ public class ManterInclusaoEdicaoView extends javax.swing.JFrame {
     }//GEN-LAST:event_lblSenhaActionPerformed
 
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonCancelarManterEditar;
     private javax.swing.JButton buttonSalvar;
@@ -159,4 +154,6 @@ public class ManterInclusaoEdicaoView extends javax.swing.JFrame {
     private javax.swing.JTextField lblSenha;
     private javax.swing.JLabel lblSenhaManter;
     // End of variables declaration//GEN-END:variables
+
+
 }

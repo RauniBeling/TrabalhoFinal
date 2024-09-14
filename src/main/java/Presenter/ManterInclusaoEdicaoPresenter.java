@@ -24,6 +24,7 @@ public class ManterInclusaoEdicaoPresenter {
         view.setVisible(true);
     }
 
+
     private void Fechar() {
         view.dispose();
     }
@@ -37,13 +38,6 @@ public class ManterInclusaoEdicaoPresenter {
             salvarUsuario(nome, senha);
         });
         
-        // Adicionar ação para o botão fechar
-        view.addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                Fechar();
-            }
-        });
     }
 
     public void salvarUsuario(String nome, String senha) {

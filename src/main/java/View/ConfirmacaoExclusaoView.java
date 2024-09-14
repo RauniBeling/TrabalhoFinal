@@ -9,10 +9,10 @@ package View;
  *
  * @author rauni
  */
-public class ConfirmacaoExclusaoView extends javax.swing.JFrame {
+public class ConfirmacaoExclusaoView extends javax.swing.JInternalFrame {
 
     /**
-     * Creates new form ConfirmacaoExclusaoView
+     * Creates new form ConfirmacaoExclusaoView1
      */
     public ConfirmacaoExclusaoView() {
         initComponents();
@@ -31,10 +31,10 @@ public class ConfirmacaoExclusaoView extends javax.swing.JFrame {
         buttonNaoExcluir = new javax.swing.JButton();
         buttonSimExcluir = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(700, 300));
-        setResizable(false);
-        setType(java.awt.Window.Type.POPUP);
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
 
         jLabel1.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jLabel1.setText("Deseja realmente excluir?");
@@ -65,7 +65,7 @@ public class ConfirmacaoExclusaoView extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(145, 145, 145)
                 .addComponent(buttonSimExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 210, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 194, Short.MAX_VALUE)
                 .addComponent(buttonNaoExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(145, 145, 145))
         );
@@ -78,10 +78,8 @@ public class ConfirmacaoExclusaoView extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonNaoExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttonSimExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
-
-        jLabel1.getAccessibleContext().setAccessibleDescription("");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -94,7 +92,7 @@ public class ConfirmacaoExclusaoView extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_buttonSimExcluirActionPerformed
 
- 
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonNaoExcluir;
     private javax.swing.JButton buttonSimExcluir;

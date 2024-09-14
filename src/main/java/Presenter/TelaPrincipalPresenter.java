@@ -6,7 +6,6 @@ import Model.Usuario;
 import Service.AutenticacaoService;
 import View.TelaPrincipalView;
 
-
 public class TelaPrincipalPresenter {
     private TelaPrincipalView view;
     private AutenticacaoService autenticacaoService;
@@ -101,24 +100,11 @@ public class TelaPrincipalPresenter {
         Usuario usuarioAtual = autenticacaoService.getUsuarioAutenticado();
         if (usuarioAtual != null) {
 //            int quantidadeNotificacoes = repositorioNotificacoes.contarNotificacoesNaoLidasPorDestinatario(usuarioAtual.getNome());
-  //          view.atualizarContadorNotificacoes(quantidadeNotificacoes);
+  //         view.atualizarContadorNotificacoes(quantidadeNotificacoes);
         }
     }
 
-  
-
-    public void abrirTelaManterInclusaoEdicao() {
-        if (verificarAutenticacaoEPermissao()) {
-            new ManterInclusaoEdicaoPresenter().showView();
-        }
-    }
-
-    public void abrirTelaBuscar() {
-        if (verificarAutenticacaoEPermissao()) {
-            new BuscarPresenter().showView();
-        }
-    }
-
+    
     private boolean verificarAutenticacaoEPermissao() {
         if (!autenticacaoService.isAdmin()) {
             view.exibirMensagem("Você precisa ser um administrador para realizar esta ação.");
