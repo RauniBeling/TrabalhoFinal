@@ -192,17 +192,13 @@ public class TelaPrincipalView extends javax.swing.JFrame {
 
     private void lblNotificacaoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblNotificacaoMousePressed
         // TODO add your handling code here:
-        VisualizarNotificacoesPresenter visualizarNotificacoesPresenter = new VisualizarNotificacoesPresenter(AppInitializer.getRepositorioNotificacoes(), AppInitializer.getRepositorioUsuarios(), null);
+        VisualizarNotificacoesPresenter visualizarNotificacoesPresenter = new VisualizarNotificacoesPresenter();
         TelaPrincipalView.add(visualizarNotificacoesPresenter.getView());
         visualizarNotificacoesPresenter.showView();
     }//GEN-LAST:event_lblNotificacaoMousePressed
 
     private void btnEnviaNotificacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviaNotificacaoActionPerformed
-        EnviarNotificacaoPresenter enviarNotificacaoPresenter = new EnviarNotificacaoPresenter(
-            AppInitializer.getRepositorioUsuarios(),
-            AppInitializer.getRepositorioNotificacoes(),
-            AppInitializer.getAutenticacaoService().getUsuarioAutenticado()
-        );
+        EnviarNotificacaoPresenter enviarNotificacaoPresenter = new EnviarNotificacaoPresenter();
         TelaPrincipalView.add(enviarNotificacaoPresenter.getView());
         enviarNotificacaoPresenter.showView();
     }//GEN-LAST:event_btnEnviaNotificacaoActionPerformed
@@ -261,6 +257,8 @@ public class TelaPrincipalView extends javax.swing.JFrame {
     public void habilitarMenuAdministrador(boolean habilitar) {
         AdicionarEditar.setEnabled(habilitar);
         Buscar.setEnabled(habilitar);
+        btnEnviaNotificacao.setEnabled(habilitar);
+        mnConfig.setEnabled(habilitar);
     }
     public String solicitarNomeUsuario() {
         return JOptionPane.showInputDialog(this, "Digite seu nome de usuário:");

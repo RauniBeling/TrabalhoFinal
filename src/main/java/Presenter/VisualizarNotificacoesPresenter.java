@@ -1,15 +1,20 @@
 package Presenter;
 
-import DAO.NotificacaoDTO;
+import DAO.NotificacaoDAO;
 import Model.Notificacao;
 import Model.RepositorioNotificacoes;
 import Model.RepositorioUsuarios;
 import Model.Usuario;
+import View.TelaPrincipalView;
 import View.VisualizarNotificacoesView;
+import config.AppInitializer;
+
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 public class VisualizarNotificacoesPresenter {
 
@@ -17,35 +22,30 @@ public class VisualizarNotificacoesPresenter {
     private RepositorioNotificacoes repositorioNotificacoes;
     private RepositorioUsuarios repositorioUsuarios;
     private Usuario usuarioLogado;
+    private NotificacaoDAO notificacaoDAO;
 
-    public VisualizarNotificacoesPresenter(RepositorioNotificacoes repositorioNotificacoes, RepositorioUsuarios repositorioUsuarios, Usuario usuarioLogado) {
+    public VisualizarNotificacoesPresenter() {
         this.view = new VisualizarNotificacoesView();
-        this.repositorioNotificacoes = repositorioNotificacoes;
-        this.repositorioUsuarios = repositorioUsuarios;
-        this.usuarioLogado = usuarioLogado;
+        this.repositorioNotificacoes = AppInitializer.getRepositorioNotificacoes();
+        this.repositorioUsuarios = AppInitializer.getRepositorioUsuarios();
+        this.usuarioLogado = AppInitializer.getUsuarioLogado();
+        this.notificacaoDAO = new NotificacaoDAO();
         configureView();
     }
 
     private void configureView() {
         view.getBtnMarcarComoLida().addActionListener(e -> marcarComoLida());
-        view.getBtnFechar().addActionListener(e -> view.dispose());
+        view.getBtnFechar().addActionListener(e -> {
+            atualizarTelaPrincipal();
+            view.dispose();
+        });
         atualizarNotificacoes();
     }
 
     private void atualizarNotificacoes() {
-        List<Notificacao> notificacoes = repositorioNotificacoes.obterNotificacoesDoUsuario(usuarioLogado.getNome());
-        List<NotificacaoDTO> notificacoesDTO = notificacoes.stream()
-                .map(this::converterParaDTO)
-                .collect(Collectors.toList());
-        view.atualizarNotificacoes(notificacoesDTO);
-    }
 
-    private NotificacaoDTO converterParaDTO(Notificacao notificacao) {
-        return new NotificacaoDTO(
-            notificacao.getRemetente().getNome(),
-            notificacao.getMensagem(), (Date) notificacao.getDataEnvio(),
-            notificacao.isLida()
-        );
+        List<Notificacao> notificacoes = notificacaoDAO.obterNotificacoes(usuarioLogado.getNome());
+        view.atualizarNotificacoes(notificacoes);
     }
 
     private void marcarComoLida() {
@@ -55,17 +55,26 @@ public class VisualizarNotificacoesPresenter {
             JOptionPane.showMessageDialog(view, "Por favor, selecione pelo menos uma notificação.");
             return;
         }
-
+        int notificacoesMarcarLidas = 0;
         for (int row : selectedRows) {
-            String remetente = (String) view.getTabelaNotificacoes().getValueAt(row, 0);
-            String mensagem = (String) view.getTabelaNotificacoes().getValueAt(row, 1);
-            Notificacao notificacao = repositorioNotificacoes.obterNotificacao(usuarioLogado, remetente, mensagem);
-            if (notificacao != null) {
-                repositorioNotificacoes.marcarNotificacaoComoLida(notificacao);
+            int jaLida = ((String) view.getTabelaNotificacoes().getValueAt(row, 4)).equals("Sim") ? 1 : 0;
+            if (jaLida == 0) {
+                int idNotificacao = (int) view.getTabelaNotificacoes().getValueAt(row, 0);
+                notificacaoDAO.marcarNotificacaoComoLida(idNotificacao);
+                notificacoesMarcarLidas += 1;
             }
         }
         atualizarNotificacoes();
-        JOptionPane.showMessageDialog(view, selectedRows.length + " notificação(ões) marcada(s) como lida(s).");
+        atualizarTelaPrincipal(); // Add this line
+        JOptionPane.showMessageDialog(view, notificacoesMarcarLidas + " notificação(ões) marcada(s) como lida(s).");
+    }
+
+    private void atualizarTelaPrincipal() {
+        TelaPrincipalView telaPrincipalView = (TelaPrincipalView) SwingUtilities.getWindowAncestor(view);
+        if (telaPrincipalView != null) {
+            List<Notificacao> notificacoesNaoLidas = notificacaoDAO.obterNotificacoes(usuarioLogado.getNome());
+            telaPrincipalView.atualizarContadorNotificacoes(notificacoesNaoLidas.size());
+        }
     }
 
     public VisualizarNotificacoesView getView() {

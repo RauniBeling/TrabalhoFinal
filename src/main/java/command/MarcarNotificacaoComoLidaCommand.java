@@ -14,6 +14,6 @@ public class MarcarNotificacaoComoLidaCommand implements Command {
 
     @Override
     public void execute() {
-        repositorio.marcarNotificacaoComoLida(notificacao);
+        //repositorio.marcarNotificacaoComoLida(notificacao);
     }
 }

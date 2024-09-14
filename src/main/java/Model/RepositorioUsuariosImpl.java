@@ -36,20 +36,5 @@ public class RepositorioUsuariosImpl implements RepositorioUsuarios {
         this.usuarioDAO = usuarioDAO;
      }
 
-    @Override
-    public void enviarNotificacao(Usuario remetente, Usuario destinatario, String mensagem) {
-        Notificacao notificacao = new Notificacao(mensagem, remetente, destinatario);
-        usuarioDAO.cadastrarNotificacao(notificacao);
-    }
-
-    @Override
-    public List<Notificacao> obterNotificacoesNaoLidas(Usuario usuario) {
-        return usuarioDAO.obterNotificacoesNaoLidas(usuario.getNome());
-    }
-
-    @Override
-    public void marcarNotificacaoComoLida(Notificacao notificacao) {
-        usuarioDAO.marcarNotificacaoComoLida(notificacao);
-    }
 }
 

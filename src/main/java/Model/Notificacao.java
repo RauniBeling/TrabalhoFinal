@@ -20,7 +20,14 @@ public class Notificacao {
         this.remetente = remetente;
         this.destinatario = destinatario;
     }
-
+    public Notificacao(int id, String mensagem, Usuario remetente, Usuario destinatario, boolean lida) {
+        this.id = id;
+        this.mensagem = mensagem;
+        this.dataEnvio = new Date();
+        this.lida = lida;
+        this.remetente = remetente;
+        this.destinatario = destinatario;
+    }
     // Getters e setters
     public String getMensagem() {
         return mensagem;
@@ -46,8 +53,8 @@ public class Notificacao {
         this.lida = lida;
     }
 
-    public Usuario getRemetente() {
-        return remetente;
+    public String getRemetente() {
+        return remetente.getNome();
     }
 
     public void setRemetente(Usuario remetente) {

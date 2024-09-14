@@ -8,8 +8,9 @@ import java.util.List;
 
 import javax.swing.ListSelectionModel;
 
-import DAO.NotificacaoDTO;
 import javax.swing.table.DefaultTableModel;
+
+import Model.Notificacao;
 
 /**
  *
@@ -20,12 +21,30 @@ public class VisualizarNotificacoesView extends javax.swing.JInternalFrame {
     private javax.swing.JTable tabelaNotificacoes;
     private javax.swing.JButton btnMarcarComoLida;
     private javax.swing.JButton btnFechar;
+    private javax.swing.JLabel lblInstrucao; // Add this line
 
     /**
      * Creates new form NewJInternalFrame
      */
     public VisualizarNotificacoesView() {
         initComponents();
+        
+        // Add icons for maximize, minimize, and restore
+        try {
+            java.net.URL iconURL = getClass().getResource("/icons/notification_icon.png");
+            if (iconURL != null) {
+                setFrameIcon(new javax.swing.ImageIcon(iconURL));
+            } else {
+                System.err.println("Warning: notification_icon.png not found");
+            }
+        } catch (Exception e) {
+            System.err.println("Error setting frame icon: " + e.getMessage());
+        }
+        
+        setMaximizable(true);
+        setIconifiable(true);
+        setResizable(true);
+        setClosable(true);
     }
 
     /**
@@ -41,9 +60,14 @@ public class VisualizarNotificacoesView extends javax.swing.JInternalFrame {
         tabelaNotificacoes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {},
             new String [] {
-                "Remetente", "Mensagem", "Data", "Lida"
+                "ID", "Remetente", "Mensagem", "Data", "Lida"
             }
-        ));
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // This makes all cells non-editable
+            }
+        });
         // Allow multiple row selection
         tabelaNotificacoes.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         
@@ -52,15 +76,37 @@ public class VisualizarNotificacoesView extends javax.swing.JInternalFrame {
         btnMarcarComoLida = new javax.swing.JButton("Marcar como Lida");
         btnFechar = new javax.swing.JButton("Fechar");
 
+        lblInstrucao = new javax.swing.JLabel("Aperte Ctrl + mouse para selecionar mais de uma notificação");
+        lblInstrucao.setFont(new java.awt.Font("Segoe UI", 2, 12)); // Italic font
+        lblInstrucao.setForeground(java.awt.Color.DARK_GRAY);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 394, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnMarcarComoLida)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnFechar))
+                    .addComponent(lblInstrucao)) // Add this line
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 274, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblInstrucao) // Add this line
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnMarcarComoLida)
+                    .addComponent(btnFechar))
+                .addContainerGap())
         );
 
         pack();
@@ -68,7 +114,7 @@ public class VisualizarNotificacoesView extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    // End of variables declaration//GEN-END:variables
+    // End of variables declaration//GEN-ENDIFICATIONS
 
     public javax.swing.JTable getTabelaNotificacoes() {
         return tabelaNotificacoes;
@@ -87,16 +133,16 @@ public class VisualizarNotificacoesView extends javax.swing.JInternalFrame {
         return tabelaNotificacoes.getSelectedRows();
     }
 
-    public void atualizarNotificacoes(List<NotificacaoDTO> notificacoesDTO) {
-        // TODO Auto-generated method stub
-        DefaultTableModel tableModel = (DefaultTableModel) tabelaNotificacoes.getModel();
-        tableModel.setRowCount(0);
-        for (NotificacaoDTO notificacao : notificacoesDTO) {
-            tableModel.addRow(new Object[] {
+    public void atualizarNotificacoes(List<Notificacao> notificacoes) {
+        DefaultTableModel model = (DefaultTableModel) tabelaNotificacoes.getModel();
+        model.setRowCount(0);
+        for (Notificacao notificacao : notificacoes) {
+            model.addRow(new Object[] {
+                notificacao.getId(),
                 notificacao.getRemetente(),
                 notificacao.getMensagem(),
                 notificacao.getDataEnvio(),
-                notificacao.isLida()
+                notificacao.isLida() ? "Sim" : "Não"
             });
         }
     }
