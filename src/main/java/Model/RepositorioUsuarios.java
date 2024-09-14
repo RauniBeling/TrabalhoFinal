@@ -11,5 +11,8 @@ public interface RepositorioUsuarios {
     Usuario obterUsuarioPorNome(String nome);
     List<Usuario> obterTodosUsuarios();
     void repositorioUsuariosImpl(UsuarioDAO usuarioDAO);
+    void enviarNotificacao(Usuario remetente, Usuario destinatario, String mensagem);
+    List<Notificacao> obterNotificacoesNaoLidas(Usuario usuario);
+    void marcarNotificacaoComoLida(Notificacao notificacao);
 }
 

@@ -4,7 +4,6 @@ import Model.RepositorioUsuarios;
 import Model.Usuario;
 import View.ManterInclusaoEdicaoView;
 import View.ManterVisualizacaoView;
-import View.SucessoView;
 import java.awt.event.ActionEvent;
 import java.util.Date;
 import javax.swing.JOptionPane;
@@ -20,11 +19,15 @@ public class ManterInclusaoEdicaoPresenter {
         view.getButtonCancelarManterEditar().addActionListener((ActionEvent e) -> {
             Fechar();
         });
+      
         configureView();
         view.setVisible(true);
     }
 
-
+    public ManterInclusaoEdicaoView getView(){
+        return view;
+    }
+    
     private void Fechar() {
         view.dispose();
     }
@@ -47,8 +50,6 @@ public class ManterInclusaoEdicaoPresenter {
         // Exibir mensagem de sucesso
         JOptionPane.showMessageDialog(view, "Usuário salvo com sucesso!");
         // Fechar a tela de inclusão/edição
-        SucessoView sucessoView = new SucessoView();
-        sucessoView.setVisible(true);
     }
 
     public void cancelar() {

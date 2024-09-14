@@ -15,13 +15,14 @@ public class BuscarPresenter {
         view.getButtonFecharBuscar().addActionListener((ActionEvent e) -> {
                 Fechar();
             });
-        view.setVisible(true);
     }
 
     private void Fechar() {
         view.dispose();
     }
-
+public BuscarView getView(){
+    return view;
+}
 
     public void buscarUsuario(String nome) {
         Usuario usuario = repositorioUsuarios.obterUsuarioPorNome(nome);

@@ -5,7 +5,6 @@
  */
 package View;
 
-import java.awt.event.WindowAdapter;
 import javax.swing.JButton;
 
 /**

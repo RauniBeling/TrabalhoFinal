@@ -13,7 +13,7 @@ import Model.RepositorioUsuarios;
 import Model.RepositorioUsuariosImpl;
 import Model.RepositorioNotificacoes;
 import Service.AutenticacaoService;
-
+import Model.RepositorioNotificacoesImpl;
 public class AppInitializer {
     private static UsuarioDAO usuarioDAO;
     private static RepositorioUsuarios repositorioUsuarios;
@@ -23,6 +23,7 @@ public class AppInitializer {
         usuarioDAO = new UsuarioDAO();
         repositorioUsuarios = new RepositorioUsuariosImpl();
         autenticacaoService = new AutenticacaoService(repositorioUsuarios);
+        repositorioNotificacoes = new RepositorioNotificacoesImpl();
         repositorioUsuarios.repositorioUsuariosImpl(usuarioDAO);     
     }
     public static AutenticacaoService getAutenticacaoService() {
@@ -34,5 +35,9 @@ public class AppInitializer {
 
     public static RepositorioNotificacoes getRepositorioNotificacoes() {
         return repositorioNotificacoes;
+    }
+
+    public static UsuarioDAO getUsuarioDAO() {
+        return usuarioDAO;
     }
 }

@@ -1,6 +1,7 @@
 package DAO;
 
 import Model.Usuario;
+import Model.Notificacao;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,14 +24,26 @@ public class UsuarioDAO {
     }
 
     private void criarTabelaUsuarios() {
-        String sql = "CREATE TABLE IF NOT EXISTS usuarios (" +
+        String sqlUsuarios = "CREATE TABLE IF NOT EXISTS usuarios (" +
                      "nome TEXT PRIMARY KEY," +
                      "senha TEXT NOT NULL," +
                      "data_cadastro DATE NOT NULL," +
                      "tipo TEXT NOT NULL," +
                      "permitido BOOLEAN NOT NULL)";
+        
+        String sqlNotificacoes = "CREATE TABLE IF NOT EXISTS notificacoes (" +
+                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                     "remetente TEXT NOT NULL," +
+                     "destinatario TEXT NOT NULL," +
+                     "mensagem TEXT NOT NULL," +
+                     "data_envio TIMESTAMP NOT NULL," +
+                     "lida BOOLEAN NOT NULL," +
+                     "FOREIGN KEY (remetente) REFERENCES usuarios(nome)," +
+                     "FOREIGN KEY (destinatario) REFERENCES usuarios(nome))";
+        
         try (Statement stmt = connection.createStatement()) {
-            stmt.execute(sql);
+            stmt.execute(sqlUsuarios);
+            stmt.execute(sqlNotificacoes);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -109,6 +122,63 @@ public class UsuarioDAO {
             e.printStackTrace();
         }
         return usuarios;
+    }
+
+    public void cadastrarNotificacao(Notificacao notificacao) {
+        String sql = "INSERT INTO notificacoes (remetente, destinatario, mensagem, data_envio, lida) VALUES (?, ?, ?, ?, ?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, notificacao.getRemetente().getNome());
+            statement.setString(2, notificacao.getDestinatario().getNome());
+            statement.setString(3, notificacao.getMensagem());
+            statement.setTimestamp(4, new Timestamp(notificacao.getDataEnvio().getTime()));
+            statement.setBoolean(5, notificacao.isLida());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<Notificacao> obterNotificacoesNaoLidas(String nomeUsuario) {
+        List<Notificacao> notificacoesNaoLidas = new ArrayList<>();
+        String sql = "SELECT * FROM notificacoes WHERE destinatario = ? AND lida = false";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, nomeUsuario);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Notificacao notificacao = criarNotificacaoDoResultSet(resultSet);
+                notificacoesNaoLidas.add(notificacao);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return notificacoesNaoLidas;
+    }
+
+    public void marcarNotificacaoComoLida(Notificacao notificacao) {
+        String sql = "UPDATE notificacoes SET lida = true WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, notificacao.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Notificacao criarNotificacaoDoResultSet(ResultSet resultSet) throws SQLException {
+        String mensagem = resultSet.getString("mensagem");
+        String nomeRemetente = resultSet.getString("remetente");
+        String nomeDestinatario = resultSet.getString("destinatario");
+        Timestamp dataEnvio = resultSet.getTimestamp("data_envio");
+        boolean lida = resultSet.getBoolean("lida");
+
+        Usuario remetente = obterUsuarioPorNome(nomeRemetente);
+        Usuario destinatario = obterUsuarioPorNome(nomeDestinatario);
+
+        Notificacao notificacao = new Notificacao(mensagem, remetente, destinatario);
+        notificacao.setDataEnvio(dataEnvio);
+        notificacao.setLida(lida);
+
+        return notificacao;
     }
 
 }

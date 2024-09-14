@@ -1,12 +1,15 @@
 package Presenter;
 
+import Model.Notificacao;
 import Model.RepositorioUsuarios;
 import Model.RepositorioNotificacoes;
 import Model.Usuario;
 import Service.AutenticacaoService;
 import View.TelaPrincipalView;
+import java.util.List;
 
 public class TelaPrincipalPresenter {
+
     private TelaPrincipalView view;
     private AutenticacaoService autenticacaoService;
     private RepositorioUsuarios repositorioUsuarios;
@@ -27,7 +30,17 @@ public class TelaPrincipalPresenter {
             autenticarUsuario();
         }
         atualizarInformacoesTela();
-        
+
+        view.getLblNotificacao().addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (autenticacaoService.getUsuarioAutenticado().isAdministrador()) {
+                    view.exibirMensagem("Administradores não podem visualizar notificações.");
+                } else {
+                    abrirVisualizarNotificacoes();
+                }
+            }
+        });
+
     }
 
     private boolean isDatabaseEmpty() {
@@ -86,7 +99,7 @@ public class TelaPrincipalPresenter {
     private void atualizarInformacoesTela() {
         Usuario usuarioAtual = autenticacaoService.getUsuarioAutenticado();
         if (usuarioAtual != null && usuarioAtual.isPermitido()) {
-            view.atualizarInformacoesUsuario(usuarioAtual.getNome(), usuarioAtual.getTipo());
+            view.atualizarInformacoesUsuario();
             view.habilitarMenuAdministrador(autenticacaoService.isAdmin());
             atualizarContadorNotificacoes();
             view.exibirTela();
@@ -97,19 +110,26 @@ public class TelaPrincipalPresenter {
     }
 
     private void atualizarContadorNotificacoes() {
-        Usuario usuarioAtual = autenticacaoService.getUsuarioAutenticado();
-        if (usuarioAtual != null) {
-//            int quantidadeNotificacoes = repositorioNotificacoes.contarNotificacoesNaoLidasPorDestinatario(usuarioAtual.getNome());
-  //         view.atualizarContadorNotificacoes(quantidadeNotificacoes);
-        }
+        Usuario usuarioLogado = autenticacaoService.getUsuarioAutenticado();
+        int quantidadeNaoLidas = repositorioUsuarios.obterNotificacoesNaoLidas(usuarioLogado).size();
+        view.atualizarContadorNotificacoes(quantidadeNaoLidas);
     }
 
-    
     private boolean verificarAutenticacaoEPermissao() {
         if (!autenticacaoService.isAdmin()) {
             view.exibirMensagem("Você precisa ser um administrador para realizar esta ação.");
             return false;
         }
         return true;
+    }
+
+    private void abrirVisualizarNotificacoes() {
+        Usuario usuarioLogado = autenticacaoService.getUsuarioAutenticado();
+        VisualizarNotificacoesPresenter visualizarNotificacoesPresenter = new VisualizarNotificacoesPresenter(
+                repositorioNotificacoes,
+                repositorioUsuarios,
+                usuarioLogado
+        );
+        visualizarNotificacoesPresenter.showView();
     }
 }

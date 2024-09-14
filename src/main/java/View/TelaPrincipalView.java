@@ -4,17 +4,33 @@
  * and open the template in the editor.
  */
 package View;
+import javax.swing.JButton;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
+import Model.Usuario;
 import Presenter.BuscarPresenter;
+import Presenter.EnviarNotificacaoPresenter;
 import Presenter.ManterInclusaoEdicaoPresenter;
+import Presenter.VisualizarNotificacoesPresenter;
 import config.AppInitializer;
+import Service.AutenticacaoService;
+
 /**
  *
  * @author rauni
  */
 public class TelaPrincipalView extends javax.swing.JFrame {
+    private AutenticacaoService autenticacaoService;
 
+    /**
+     * @param btnEnviaNotificacao the btnEnviaNotificacao to set
+     */
+    public void setBtnEnviaNotificacao(javax.swing.JMenuItem btnEnviaNotificacao) {
+        this.btnEnviaNotificacao = btnEnviaNotificacao;
+    }
+
+    private AppInitializer config;
     public javax.swing.JMenuItem getMenuAdicionarEditar() {
         return AdicionarEditar;
     }
@@ -22,6 +38,8 @@ public class TelaPrincipalView extends javax.swing.JFrame {
         return Buscar;
     }
     public TelaPrincipalView() {
+        config = new AppInitializer();
+        autenticacaoService = AppInitializer.getAutenticacaoService();
         initComponents();
     }
 
@@ -42,7 +60,10 @@ public class TelaPrincipalView extends javax.swing.JFrame {
         fileMenu = new javax.swing.JMenu();
         Buscar = new javax.swing.JMenuItem();
         AdicionarEditar = new javax.swing.JMenuItem();
-        config = new javax.swing.JMenuItem();
+        mnConfig = new javax.swing.JMenuItem();
+        btnEnviaNotificacao = new javax.swing.JMenuItem();
+        mnEsqueciSenha = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -57,6 +78,11 @@ public class TelaPrincipalView extends javax.swing.JFrame {
         lblNotificacao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/16px bell.png"))); // NOI18N
         lblNotificacao.setText("0");
         lblNotificacao.setPreferredSize(new java.awt.Dimension(70, 40));
+        lblNotificacao.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                lblNotificacaoMousePressed(evt);
+            }
+        });
 
         TelaPrincipalView.setLayer(lblTipoUsuario, javax.swing.JLayeredPane.DEFAULT_LAYER);
         TelaPrincipalView.setLayer(lblLogin, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -85,7 +111,7 @@ public class TelaPrincipalView extends javax.swing.JFrame {
         );
 
         fileMenu.setMnemonic('f');
-        fileMenu.setText("Menu");
+        fileMenu.setText("Menu Admin");
 
         Buscar.setMnemonic('o');
         Buscar.setText("Buscar");
@@ -104,15 +130,28 @@ public class TelaPrincipalView extends javax.swing.JFrame {
         });
         fileMenu.add(AdicionarEditar);
 
-        config.setText("Configurações");
-        config.addActionListener(new java.awt.event.ActionListener() {
+        btnEnviaNotificacao.setText("Enviar notificação");
+        btnEnviaNotificacao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                configActionPerformed(evt);
+                btnEnviaNotificacaoActionPerformed(evt);
             }
         });
-        fileMenu.add(config);
+        fileMenu.add(btnEnviaNotificacao);
 
         menuBar.add(fileMenu);
+
+        mnEsqueciSenha.setText("Menu user");
+
+        jMenuItem1.setLabel("esqueci a senha");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        mnEsqueciSenha.add(jMenuItem1);
+        jMenuItem1.getAccessibleContext().setAccessibleName("esqueci senha");
+
+        menuBar.add(mnEsqueciSenha);
 
         setJMenuBar(menuBar);
 
@@ -131,34 +170,57 @@ public class TelaPrincipalView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarActionPerformed
-        BuscarView buscar = new BuscarView();
-        TelaPrincipalView.add(buscar);
-        buscar.setVisible(true);
+        BuscarPresenter buscar = new BuscarPresenter();
+        TelaPrincipalView.add(buscar.getView());
+        buscar.showView();
     }//GEN-LAST:event_BuscarActionPerformed
 
     private void AdicionarEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdicionarEditarActionPerformed
-        ManterInclusaoEdicaoView manter = new ManterInclusaoEdicaoView();
-        TelaPrincipalView.add(manter);
-        manter.setVisible(true);
+        ManterInclusaoEdicaoPresenter manter = new ManterInclusaoEdicaoPresenter(AppInitializer.getRepositorioUsuarios());
+        TelaPrincipalView.add(manter.getView());
+        manter.showView();
     }//GEN-LAST:event_AdicionarEditarActionPerformed
 
-    private void configActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_configActionPerformed
+    private void mnConfigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnConfigActionPerformed
         JOptionPane.showMessageDialog(this, "Configuração menu clicked");
-        AppInitializer config = new AppInitializer();
         
-    }//GEN-LAST:event_configActionPerformed
+    }//GEN-LAST:event_mnConfigActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void lblNotificacaoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblNotificacaoMousePressed
+        // TODO add your handling code here:
+        VisualizarNotificacoesPresenter visualizarNotificacoesPresenter = new VisualizarNotificacoesPresenter(AppInitializer.getRepositorioNotificacoes(), AppInitializer.getRepositorioUsuarios(), null);
+        TelaPrincipalView.add(visualizarNotificacoesPresenter.getView());
+        visualizarNotificacoesPresenter.showView();
+    }//GEN-LAST:event_lblNotificacaoMousePressed
+
+    private void btnEnviaNotificacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviaNotificacaoActionPerformed
+        EnviarNotificacaoPresenter enviarNotificacaoPresenter = new EnviarNotificacaoPresenter(
+            AppInitializer.getRepositorioUsuarios(),
+            AppInitializer.getRepositorioNotificacoes(),
+            AppInitializer.getAutenticacaoService().getUsuarioAutenticado()
+        );
+        TelaPrincipalView.add(enviarNotificacaoPresenter.getView());
+        enviarNotificacaoPresenter.showView();
+    }//GEN-LAST:event_btnEnviaNotificacaoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem AdicionarEditar;
     private javax.swing.JMenuItem Buscar;
     private javax.swing.JDesktopPane TelaPrincipalView;
-    private javax.swing.JMenuItem config;
+    private javax.swing.JMenuItem btnEnviaNotificacao;
     private javax.swing.JMenu fileMenu;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JLabel lblLogin;
     private javax.swing.JLabel lblNotificacao;
     private javax.swing.JLabel lblTipoUsuario;
     private javax.swing.JMenuBar menuBar;
+    private javax.swing.JMenuItem mnConfig;
+    private javax.swing.JMenu mnEsqueciSenha;
     // End of variables declaration//GEN-END:variables
     /**
      * @return the lblLogin
@@ -183,13 +245,19 @@ public class TelaPrincipalView extends javax.swing.JFrame {
      public void exibirMensagem(String mensagem) {
         JOptionPane.showMessageDialog(this, mensagem);
     }
-    public void atualizarInformacoesUsuario(String nomeUsuario, String tipoUsuario) {
-        lblLogin.setText("Usuário: " + nomeUsuario);
-        lblTipoUsuario.setText("Tipo: " + tipoUsuario);
+    public void atualizarInformacoesUsuario() {
+        Usuario usuarioLogado = autenticacaoService.getUsuarioAutenticado();
+        if (usuarioLogado != null) {
+            lblLogin.setText("Usuário: " + usuarioLogado.getNome());
+            lblTipoUsuario.setText("Tipo: " + (usuarioLogado.isAdministrador() ? "Administrador" : "Usuário"));
+            habilitarMenuAdministrador(usuarioLogado.isAdministrador());
+        } else {
+            lblLogin.setText("Usuário não logado");
+            lblTipoUsuario.setText("Tipo: N/A");
+            habilitarMenuAdministrador(false);
+        }
     }
-    public void atualizarContadorNotificacoes(int quantidade) {
-        lblNotificacao.setText(String.valueOf(quantidade));
-    }
+    
     public void habilitarMenuAdministrador(boolean habilitar) {
         AdicionarEditar.setEnabled(habilitar);
         Buscar.setEnabled(habilitar);
@@ -205,5 +273,28 @@ public class TelaPrincipalView extends javax.swing.JFrame {
     }
     public void exibirTela() {
         setVisible(true);
+    }
+    private JButton notificacoesButton;
+
+    public JButton getNotificacoesButton() {
+        return notificacoesButton;
+    }
+
+    public void atualizarContadorNotificacoes(int quantidade) {
+        lblNotificacao.setText(String.valueOf(quantidade));
+    }
+
+    /**
+     * @return the btnEnviaNotificacao
+     */
+    public javax.swing.JMenuItem getBtnEnviaNotificacao() {
+        return btnEnviaNotificacao;
+    }
+
+    /**
+     * @return the jMenuItem1
+     */
+    public javax.swing.JMenuItem getjMenuItem1() {
+        return jMenuItem1;
     }
 }
