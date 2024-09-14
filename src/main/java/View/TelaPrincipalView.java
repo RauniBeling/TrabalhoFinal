@@ -195,10 +195,11 @@ public class TelaPrincipalView extends javax.swing.JFrame {
         manter.showView();
     }//GEN-LAST:event_AdicionarEditarActionPerformed
 
-    private void mnConfigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnConfigActionPerformed
-        JOptionPane.showMessageDialog(this, "Configuração menu clicked");
-        
-    }//GEN-LAST:event_mnConfigActionPerformed
+    private void mnConfigActionPerformed(java.awt.event.ActionEvent evt) {
+        ConfiguracaoView configuracaoView = new ConfiguracaoView();
+        TelaPrincipalView.add(configuracaoView);
+        configuracaoView.setVisible(true);
+    }
 
     private void mnTrocaSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnTrocaSenhaActionPerformed
         TrocaSenhaPresenter trocaSenha = new TrocaSenhaPresenter();
